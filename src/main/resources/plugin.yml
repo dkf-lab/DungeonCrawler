@@ -1,0 +1,13 @@
+name: DungeonCrawler
+version: ${project.version}
+main: me.dkflab.dungeoncrawler.DungeonCrawler
+api-version: 1.17
+authors: [dkflab]
+description: Dungeon crawler plugin
+commands:
+  class:
+    description: Class selector
+  dungeon:
+    description: Matchmaking command
+  upgrade:
+    description: Upgrade tools
