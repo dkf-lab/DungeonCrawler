@@ -34,6 +34,8 @@ public class DungeonCommand implements CommandExecutor {
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("leave")) {
                     main.getMM().removePlayerFromArena(p);
+                    p.sendMessage(Utils.color("&cYou have left the dungeon."));
+                    p.teleport(main.getConfig().getLocation("spawn"));
                     return true;
                 }
                 if (args[0].equalsIgnoreCase("help")) {
@@ -43,11 +45,21 @@ public class DungeonCommand implements CommandExecutor {
                 }
                 if (args[0].equalsIgnoreCase("config")) {
                     sender.sendMessage(Utils.color("&c/dungeon config <dungeon> <boss/spawn/mobs>"));
+                    sender.sendMessage(Utils.color("&c/dungeon config <lobby>"));
                     return true;
                 }
             }
             if (args.length == 2) {
-
+                if (args[0].equalsIgnoreCase("config")) {
+                    if (args[1].equalsIgnoreCase("lobby")) {
+                        main.getConfig().set("spawn", p.getLocation());
+                        main.saveConfig();
+                        p.sendMessage(Utils.color("&aLobby set to your location."));
+                        return true;
+                    }
+                }
+                sender.sendMessage(Utils.color("&c/dungeon config <spawn>"));
+                return true;
             }
             if (args.length == 3) {
                 if (args[0].equalsIgnoreCase("config")) {
@@ -86,7 +98,8 @@ public class DungeonCommand implements CommandExecutor {
                     }
                     // config <dungeon> mobs
                     if (args[2].equalsIgnoreCase("mobs")) {
-                        ConfigurationSection s = section.getConfigurationSection("mobSpawns").createSection("loc" + section.getConfigurationSection("mobSpawns").getKeys(false).size());
+                        int size = section.getConfigurationSection("mobSpawns").getKeys(false).size()+1;
+                        ConfigurationSection s = section.getConfigurationSection("mobSpawns").createSection("loc" + size);
                         s.set("x",loc.getX());
                         s.set("y",loc.getY());
                         s.set("z",loc.getZ());

@@ -11,3 +11,5 @@ commands:
     description: Matchmaking command
   upgrade:
     description: Upgrade tools
+  shop:
+    description: Shop for tools

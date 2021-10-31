@@ -2,9 +2,11 @@ package me.dkflab.dungeoncrawler;
 
 import me.dkflab.dungeoncrawler.commands.ClassCommand;
 import me.dkflab.dungeoncrawler.commands.DungeonCommand;
+import me.dkflab.dungeoncrawler.commands.ShopCommand;
 import me.dkflab.dungeoncrawler.commands.UpgradeCommand;
 import me.dkflab.dungeoncrawler.listeners.BlockBreak;
 import me.dkflab.dungeoncrawler.listeners.ClickListener;
+import me.dkflab.dungeoncrawler.listeners.EntityDamage;
 import me.dkflab.dungeoncrawler.listeners.InventoryListener;
 import me.dkflab.dungeoncrawler.managers.*;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,12 +36,14 @@ public final class DungeonCrawler extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ClickListener(this), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(this),this);
         getServer().getPluginManager().registerEvents(new BlockBreak(this),this);
+        getServer().getPluginManager().registerEvents(new EntityDamage(this),this);
     }
 
     private void registerCommands() {
         getCommand("class").setExecutor(new ClassCommand(this));
         getCommand("dungeon").setExecutor(new DungeonCommand(this));
         getCommand("upgrade").setExecutor(new UpgradeCommand(this));
+        getCommand("shop").setExecutor(new ShopCommand(this));
     }
 
     public GUIManager getGUI() {

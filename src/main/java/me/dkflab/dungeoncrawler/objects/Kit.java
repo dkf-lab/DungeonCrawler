@@ -11,13 +11,14 @@ public class Kit {
     private String name;
     private List<ItemStack> items;
     private List<ItemStack> armor;
-    private ItemStack abilityItem;
+    private ItemStack abilityItem, pickaxe;
 
-    public Kit(String name, List<ItemStack> items, List<ItemStack> armor, ItemStack abilityItem) {
+    public Kit(String name, List<ItemStack> items, List<ItemStack> armor, ItemStack abilityItem, ItemStack pickaxe) {
         this.name = name;
         this.items = items;
         this.armor = armor;
         this.abilityItem = abilityItem;
+        this.pickaxe = pickaxe;
     }
 
     public String getName() {
@@ -36,12 +37,17 @@ public class Kit {
         return this.abilityItem;
     }
 
+    public ItemStack getPickaxe() {
+        return this.pickaxe;
+    }
+
     public void giveToPlayer(Player p) {
         PlayerInventory inv = p.getInventory();
         for (ItemStack item : this.items) {
             inv.addItem(item);
         }
         inv.addItem(this.abilityItem);
+        inv.addItem(this.pickaxe);
         inv.setHelmet(getHelmet());
         inv.setChestplate(getChestplate());
         inv.setLeggings(getLeggings());

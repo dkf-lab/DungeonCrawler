@@ -1,7 +1,15 @@
+spawn:
+  ==: org.bukkit.Location
+  world: world
+  x: 19.21503342561479
+  y: 144.0
+  z: 90.21659636344998
+  pitch: 26.46552
+  yaw: -93.31634
 dungeons:
-  example:
+  one:
     # Name of dungeon
-    name: 'Example'
+    name: 'One'
     # World of dungeon
     world: 'world'
     # Spawn point for players

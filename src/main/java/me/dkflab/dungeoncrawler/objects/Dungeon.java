@@ -13,8 +13,10 @@ public class Dungeon {
     private String name,world;
     private List<Location> mobSpawns = new ArrayList<>();
     private Location playerSpawn,bossSpawn;
+    private ConfigurationSection configurationSection;
 
     public Dungeon(final ConfigurationSection section) {
+        this.configurationSection = section;
         this.name = section.getString("name");
         this.world = section.getString("world");
         // player spawn point
@@ -42,7 +44,15 @@ public class Dungeon {
         return this.playerSpawn;
     }
 
+    public Location getBossSpawn() {
+        return this.bossSpawn;
+    }
+
     public List<Location> getMobSpawns() {
         return this.mobSpawns;
+    }
+
+    public ConfigurationSection getConfigurationSection() {
+        return this.configurationSection;
     }
 }

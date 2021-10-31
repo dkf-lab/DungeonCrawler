@@ -11,17 +11,19 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
-public class ClassSelect implements InventoryHolder {
+public class ShopScreen implements InventoryHolder {
 
     private final Inventory inv;
 
     private DungeonCrawler main;
-    public ClassSelect(DungeonCrawler main) {
+    public ShopScreen(DungeonCrawler main) {
         this.main = main;
-        inv = Bukkit.createInventory(this,45,"Enter the dungeon!");
+        inv = Bukkit.createInventory(this,45,"Shop");
         init();
     }
 
@@ -31,21 +33,16 @@ public class ClassSelect implements InventoryHolder {
         }
         HashMap<Enchantment, Integer> enchants = new HashMap();
         enchants.put(Enchantment.LUCK, 1);
-        inv.setItem(21, Utils.createItem(Material.BLAZE_ROD, 1, "&6&lHealer", Collections.singletonList("&7Select the 'Healer' class."), enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
-        inv.setItem(23, Utils.createItem(Material.STONE_SWORD, 1, "&f&lTank", Collections.singletonList("&7Select the 'Tank' class."), enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
+        List<String> lore = new ArrayList<>();
+        lore.add(Utils.color("&7A sharper sword."));
+        lore.add(Utils.color("&r"));
+        lore.add(Utils.color("&6Price: &a5x Emerald"));
+        inv.setItem(22, Utils.createItem(Material.DIAMOND_SWORD, 1, "&b&lDiamond Sword", lore, enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
     }
 
     public void listener(InventoryClickEvent e) {
         Material mat = e.getCurrentItem().getType();
         Player p = (Player)e.getWhoClicked();
-        if (mat.equals(Material.BLAZE_ROD)) {
-            main.getMM().setClassOfPlayer(p, main.kits.healer);
-            p.closeInventory();
-        }
-        if (mat.equals(Material.STONE_SWORD)) {
-            main.getMM().setClassOfPlayer(p, main.kits.tank);
-            p.closeInventory();
-        }
     }
 
     @Override

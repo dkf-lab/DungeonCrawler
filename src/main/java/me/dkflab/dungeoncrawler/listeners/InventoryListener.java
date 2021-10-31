@@ -8,8 +8,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class InventoryListener implements Listener {
 
     private DungeonCrawler main;
-    public InventoryListener(DungeonCrawler m) {
-        main = m;
+    public InventoryListener(DungeonCrawler main) {
+        this.main=main;
     }
 
     @EventHandler

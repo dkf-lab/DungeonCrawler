@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class Utils {
 
@@ -76,5 +77,10 @@ public class Utils {
 
     public static ItemStack blankPane() {
         return createItem(Material.GRAY_STAINED_GLASS_PANE,1,"&r",null,null,null,false);
+    }
+
+    public static int randomNumber(int min, int max) {
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
     }
 }

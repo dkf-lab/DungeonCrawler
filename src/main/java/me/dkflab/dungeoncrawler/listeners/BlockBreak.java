@@ -43,7 +43,7 @@ public class BlockBreak implements Listener {
     }
 
     private void method(Player p, Block block, Material m) {
-        main.dungeonManager.addItemToReset(block,block.getType());
+        main.dungeonManager.addItemToReset(main.getMM().getDungeonOfPlayer(p),block,block.getType());
         p.getInventory().addItem(new ItemStack(m, 1));
         block.setType(Material.BEDROCK);
     }

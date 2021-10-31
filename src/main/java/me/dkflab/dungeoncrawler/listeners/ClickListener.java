@@ -11,8 +11,8 @@ import org.bukkit.inventory.PlayerInventory;
 public class ClickListener implements Listener {
 
     private DungeonCrawler main;
-    public ClickListener(DungeonCrawler p) {
-        this.main = p;
+    public ClickListener(DungeonCrawler main) {
+        this.main = main;
     }
 
     @EventHandler

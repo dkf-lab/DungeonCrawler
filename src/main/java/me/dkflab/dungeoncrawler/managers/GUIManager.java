@@ -3,6 +3,7 @@ package me.dkflab.dungeoncrawler.managers;
 import me.dkflab.dungeoncrawler.DungeonCrawler;
 import me.dkflab.dungeoncrawler.gui.ClassSelect;
 import me.dkflab.dungeoncrawler.gui.DungeonSelect;
+import me.dkflab.dungeoncrawler.gui.ShopScreen;
 import me.dkflab.dungeoncrawler.gui.UpgradeScreen;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.InventoryHolder;
@@ -18,11 +19,13 @@ public class GUIManager {
     public DungeonSelect dungeonSelect;
     public ClassSelect classSelect;
     public UpgradeScreen upgradeScreen;
+    public ShopScreen shopScreen;
 
     private void init() {
         dungeonSelect = new DungeonSelect(main);
         classSelect = new ClassSelect(main);
         upgradeScreen = new UpgradeScreen(main);
+        shopScreen = new ShopScreen(main);
     }
 
     public void event(InventoryClickEvent e) {
@@ -39,6 +42,10 @@ public class GUIManager {
             if (i instanceof UpgradeScreen) {
                 e.setCancelled(true);
                 upgradeScreen.listener(e);
+            }
+            if (i instanceof ShopScreen) {
+                e.setCancelled(true);
+                shopScreen.listener(e);
             }
         }
     }

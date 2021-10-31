@@ -39,7 +39,7 @@ public class DungeonSelect implements InventoryHolder {
     public void listener(InventoryClickEvent e) {
         Material mat = e.getCurrentItem().getType();
         if (mat.equals(Material.STRING)) {
-            main.getMM().addPlayerToDungeonOne((Player) e.getWhoClicked());
+            main.getMM().addPlayerToDungeon((Player) e.getWhoClicked(),main.dungeonManager.one);
         }
     }
 

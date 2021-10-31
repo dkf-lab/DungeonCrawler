@@ -60,7 +60,15 @@ public class KitsManager {
         armor.add(setArmorColor(createItem(Material.LEATHER_LEGGINGS, 1, "&fLeggings of The Scholar", null, null, flags, true), Color.WHITE));
         armor.add(setArmorColor(createItem(Material.LEATHER_BOOTS, 1, "&fBoots of The Scholar", null, null, flags, true), Color.WHITE));
 
-        this.healer = new Kit("healer", items, armor, ability);
+        // Pickaxe
+        enchants.clear();
+        enchants.put(Enchantment.DIG_SPEED, 3);
+        lore.clear();
+        lore.add("&7A portable drill,");
+        lore.add("&7made in China.");
+        ItemStack pic = createItem(Material.GOLDEN_PICKAXE, 1, "&9&lDrill", lore, enchants, flags, true);
+
+        this.healer = new Kit("healer", items, armor, ability,pic);
     }
 
     public Kit getHealer() {
@@ -98,7 +106,14 @@ public class KitsManager {
         armor.add(createItem(Material.CHAINMAIL_LEGGINGS, 1, "&7Leggings of Valor", null, null, flags, true));
         armor.add(createItem(Material.CHAINMAIL_BOOTS, 1, "&7Boots of Valor", null, null, flags, true));
 
-        this.tank = new Kit("tank", items,armor,ability);
+        // Pickaxe
+        enchants.clear();
+        enchants.put(Enchantment.DIG_SPEED, 3);
+        lore.clear();
+        lore.add("&7A portable drill,");
+        lore.add("&7made in China.");
+        ItemStack pic = createItem(Material.GOLDEN_PICKAXE, 1, "&9&lDrill", lore, enchants, flags, true);
+        this.tank = new Kit("tank", items,armor,ability,pic);
     }
 
     public Kit getTank() {
