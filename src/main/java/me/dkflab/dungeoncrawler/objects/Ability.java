@@ -11,7 +11,6 @@ public class Ability {
     }
 
     public int getCooldown() {
-
+        return 0;
     }
-
 }
