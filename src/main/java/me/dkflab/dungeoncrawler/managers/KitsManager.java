@@ -4,13 +4,21 @@ import me.dkflab.dungeoncrawler.DungeonCrawler;
 import me.dkflab.dungeoncrawler.objects.Kit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 
 import static me.dkflab.dungeoncrawler.Utils.createItem;
 import static me.dkflab.dungeoncrawler.Utils.setArmorColor;
@@ -27,12 +35,13 @@ public class KitsManager {
     public Kit tank;
 
     public void init() {
+        saveDefaultConfig();
+        // depreciated
         createHealer();
         createTank();
     }
 
     private void createHealer() {
-        List<ItemStack> items = new ArrayList<>();
         List<ItemStack> armor = new ArrayList<>();
         List<String> lore = new ArrayList<>();
         List<ItemFlag> flags = new ArrayList<>();
@@ -44,7 +53,7 @@ public class KitsManager {
         enchants.put(Enchantment.DAMAGE_ALL, 10);
         flags.add(ItemFlag.HIDE_UNBREAKABLE);
         flags.add(ItemFlag.HIDE_ENCHANTS);
-        items.add(createItem(Material.BLAZE_ROD, 1, "&6&lStaff of The Order", lore, enchants, flags, true));
+        ItemStack weapon = (createItem(Material.BLAZE_ROD, 1, "&6&lStaff of The Order", lore, enchants, flags, true));
 
         // Book
         lore.clear();
@@ -68,7 +77,7 @@ public class KitsManager {
         lore.add("&7made in China.");
         ItemStack pic = createItem(Material.GOLDEN_PICKAXE, 1, "&9&lDrill", lore, enchants, flags, true);
 
-        this.healer = new Kit("healer", items, armor, ability,pic);
+        this.healer = new Kit("healer", weapon, armor, ability,pic);
     }
 
     public Kit getHealer() {
@@ -79,7 +88,6 @@ public class KitsManager {
     }
 
     private void createTank() {
-        List<ItemStack> items = new ArrayList<>();
         List<ItemStack> armor = new ArrayList<>();
         List<String> lore = new ArrayList<>();
         List<ItemFlag> flags = new ArrayList<>();
@@ -91,7 +99,7 @@ public class KitsManager {
         enchants.put(Enchantment.DAMAGE_ALL, 3);
         lore.add("&7A powerful sword with");
         lore.add("&7mysterious markings.");
-        items.add(createItem(Material.STONE_SWORD, 1, "&c&lSword of Power", lore, enchants, flags,true));
+        ItemStack weapon = (createItem(Material.STONE_SWORD, 1, "&c&lSword of Power", lore, enchants, flags,true));
 
         // Ability
         lore.clear();
@@ -113,7 +121,7 @@ public class KitsManager {
         lore.add("&7A portable drill,");
         lore.add("&7made in China.");
         ItemStack pic = createItem(Material.GOLDEN_PICKAXE, 1, "&9&lDrill", lore, enchants, flags, true);
-        this.tank = new Kit("tank", items,armor,ability,pic);
+        this.tank = new Kit("tank", weapon, armor, ability, pic);
     }
 
     public Kit getTank() {
@@ -121,6 +129,71 @@ public class KitsManager {
             createTank();
         }
         return this.tank;
+    }
+
+    // REWRITE
+
+    public Kit getKitByName(String name) {
+        return null;
+    }
+
+    private void scanForKits() {
+        for (String s : getConfig().getConfigurationSection("classes").getKeys(false)) {
+            ConfigurationSection sec = getConfig().getConfigurationSection("classes").getConfigurationSection(s);
+            ItemStack helmet,chestplate,leggings,boots,weapon,pickaxe;
+            String name = sec.getString("name");
+            helmet = sec.getItemStack("helmet");
+            chestplate = sec.getItemStack("chestplate");
+            leggings = sec.getItemStack("leggings");
+            boots = sec.getItemStack("boots");
+            weapon = sec.getItemStack("weapon");
+            pickaxe = sec.getItemStack("pickaxe");
+            String ability = sec.getString("ability");
+        }
+    }
+
+    private FileConfiguration dataConfig = null;
+    private File configFile = null;
+
+    public void reloadConfig() {
+        // creates config, checks for yml issues
+        if (this.configFile == null) {
+            configFile = new File(this.main.getDataFolder(), "classes.yml");
+        }
+        dataConfig = YamlConfiguration.loadConfiguration(configFile);
+        InputStream defaultStream = this.main.getResource("classes.yml");
+        if (defaultStream != null) {
+            YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
+            this.dataConfig.setDefaults(defaultConfig);
+        }
+    }
+
+    public FileConfiguration getConfig() {
+        if (dataConfig == null) {
+            reloadConfig();
+        }
+        return dataConfig;
+    }
+
+    public void saveConfig() {
+        // save config after changing data
+        if (dataConfig == null||configFile==null) {
+            return;
+        }
+        try {
+            getConfig().save(this.configFile);
+        } catch (IOException e) {
+            main.getLogger().log(Level.SEVERE, "Could not save config to " + this.configFile, e);
+        }
+    }
+
+    public void saveDefaultConfig() {
+        if (this.configFile == null) {
+            configFile = new File(this.main.getDataFolder(), "classes.yml");
+        }
+        if (!configFile.exists()) {
+            main.saveResource("classes.yml", false);
+        }
     }
 
 }

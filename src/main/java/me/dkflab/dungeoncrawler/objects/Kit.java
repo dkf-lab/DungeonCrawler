@@ -9,13 +9,12 @@ import java.util.List;
 public class Kit {
 
     private String name;
-    private List<ItemStack> items;
     private List<ItemStack> armor;
-    private ItemStack abilityItem, pickaxe;
+    private ItemStack abilityItem, pickaxe, weapon;
 
-    public Kit(String name, List<ItemStack> items, List<ItemStack> armor, ItemStack abilityItem, ItemStack pickaxe) {
+    public Kit(String name, ItemStack weapon, List<ItemStack> armor, ItemStack abilityItem, ItemStack pickaxe) {
         this.name = name;
-        this.items = items;
+        this.weapon = weapon;
         this.armor = armor;
         this.abilityItem = abilityItem;
         this.pickaxe = pickaxe;
@@ -25,8 +24,8 @@ public class Kit {
         return this.name;
     }
 
-    public List<ItemStack> getItems() {
-        return this.items;
+    public ItemStack getWeapon() {
+        return this.weapon;
     }
 
     public List<ItemStack> getArmor() {
@@ -43,9 +42,7 @@ public class Kit {
 
     public void giveToPlayer(Player p) {
         PlayerInventory inv = p.getInventory();
-        for (ItemStack item : this.items) {
-            inv.addItem(item);
-        }
+        inv.addItem(this.weapon);
         inv.addItem(this.abilityItem);
         inv.addItem(this.pickaxe);
         inv.setHelmet(getHelmet());

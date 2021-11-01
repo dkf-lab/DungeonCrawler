@@ -44,6 +44,8 @@ public class EntityDamage implements Listener {
                 // finish arena
                 e.getDrops().clear();
                 main.getMM().resetDungeon(main.dungeonManager.one);
+            } else {
+                e.getDrops().clear();
             }
         }
     }

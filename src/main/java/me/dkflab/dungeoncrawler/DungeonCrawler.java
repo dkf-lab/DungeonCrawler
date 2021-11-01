@@ -9,7 +9,10 @@ import me.dkflab.dungeoncrawler.listeners.ClickListener;
 import me.dkflab.dungeoncrawler.listeners.EntityDamage;
 import me.dkflab.dungeoncrawler.listeners.InventoryListener;
 import me.dkflab.dungeoncrawler.managers.*;
+import me.dkflab.dungeoncrawler.objects.Dungeon;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public final class DungeonCrawler extends JavaPlugin {
 
@@ -30,6 +33,19 @@ public final class DungeonCrawler extends JavaPlugin {
         mm = new MatchmakingManager(this);
         dungeonManager = new DungeonManager(this);
         RecipeManager.init();
+
+        BukkitRunnable run = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (dungeonManager.getActiveDungeons() == null) {
+                    return;
+                }
+                for (Dungeon d : dungeonManager.getActiveDungeons()) {
+                    dungeonManager.loop(d);
+                }
+            }
+        };
+        run.runTaskTimer(this,20,20);
     }
 
     private void registerListeners() {
