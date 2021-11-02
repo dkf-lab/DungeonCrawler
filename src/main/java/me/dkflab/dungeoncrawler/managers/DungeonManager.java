@@ -18,7 +18,8 @@ public class DungeonManager {
 
     HashMap<Dungeon, HashMap<Block,Material>> blocksToReset = new HashMap<>();
     HashMap<Block, Material> temp = new HashMap<>();
-    List<Location> spawns = new ArrayList<>();
+    List<Location> mobSpawns = new ArrayList<>();
+    HashMap<Dungeon, List<LivingEntity>> liveMobs = new HashMap<>();
 
     private DungeonCrawler main;
     public DungeonManager(DungeonCrawler main) {
@@ -42,8 +43,17 @@ public class DungeonManager {
         blocksToReset.put(d,temp);
     }
 
+    public void addMobToReset(Dungeon d, LivingEntity mob) {
+        List<LivingEntity> list = liveMobs.get(d);
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        list.add(mob);
+        liveMobs.put(d,list);
+    }
+
     public void resetBlocks(Dungeon dungeon) {
-        spawns.clear();
+        mobSpawns.clear();
         if (blocksToReset.get(dungeon) == null) {
             return;
         }
@@ -52,6 +62,12 @@ public class DungeonManager {
         }
         temp.clear();
         blocksToReset.put(dungeon,temp);
+    }
+
+    public void resetMobs(Dungeon dungeon) {
+        for (LivingEntity en : liveMobs.get(dungeon)) {
+            en.remove();
+        }
     }
 
     public List<Dungeon> getActiveDungeons() {
@@ -70,6 +86,7 @@ public class DungeonManager {
         en.setCustomName(Utils.color("&7Boss &8"));
         en.setCustomNameVisible(true);
         en.damage(1);
+        addMobToReset(dungeon,en);
     }
 
     public void loop(Dungeon dungeon) {
@@ -83,78 +100,85 @@ public class DungeonManager {
         int roll = Utils.randomNumber(0,100);
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (loc.distanceSquared(p.getLocation()) <= 10) {
-                if (spawns.contains(loc)) {
+                if (mobSpawns.contains(loc)) {
                     return;
                 }
                 // Zombie 20%
                 Bukkit.getLogger().info("Roll: " + roll);
                 if (roll <= 20) {
-                    Entity e = dungeon.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
+                    LivingEntity e = (LivingEntity) dungeon.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
                     ((LivingEntity)e).setMaxHealth(100);
                     ((LivingEntity)e).setHealth(((LivingEntity)e).getMaxHealth());
                     e.setCustomName(Utils.color("&7Zombie &8[&a100&7/&a100&8]"));
                     e.setCustomNameVisible(true);
-                    spawns.add(loc);
+                    mobSpawns.add(loc);
+                    addMobToReset(dungeon,e);
                     return;
                 }
                 // Skeleton 20%
                 if (roll <= 40) {
-                    Entity e = dungeon.getWorld().spawnEntity(loc, EntityType.SKELETON);
-                    ((LivingEntity)e).setMaxHealth(100);
-                    ((LivingEntity)e).setHealth(((LivingEntity)e).getMaxHealth());
+                    LivingEntity e = (LivingEntity) dungeon.getWorld().spawnEntity(loc, EntityType.SKELETON);
+                    e.setMaxHealth(100);
+                    e.setHealth(e.getMaxHealth());
                     e.setCustomName(Utils.color("&7Skeleton &8[&a100&7/&a100&8]"));
                     e.setCustomNameVisible(true);
-                    spawns.add(loc);
+                    mobSpawns.add(loc);
+                    addMobToReset(dungeon,e);
                     return;
                 }
                 // Spider 20%
                 if (roll <= 60) {
-                    Entity e = dungeon.getWorld().spawnEntity(loc, EntityType.SPIDER);
+                    LivingEntity e = (LivingEntity) dungeon.getWorld().spawnEntity(loc, EntityType.SPIDER);
                     ((LivingEntity)e).setMaxHealth(100);
                     ((LivingEntity)e).setHealth(((LivingEntity)e).getMaxHealth());
                     e.setCustomName(Utils.color("&7Spider &8[&a100&7/&a100&8]"));
                     e.setCustomNameVisible(true);
-                    spawns.add(loc);
+                    mobSpawns.add(loc);
+                    addMobToReset(dungeon,e);
                     return;
                 }
                 // Cave Spider 15%
                 if (roll <= 75) {
-                    Entity e = dungeon.getWorld().spawnEntity(loc, EntityType.CAVE_SPIDER);
+                    LivingEntity e = (LivingEntity) dungeon.getWorld().spawnEntity(loc, EntityType.CAVE_SPIDER);
                     ((LivingEntity)e).setMaxHealth(100);
                     ((LivingEntity)e).setHealth(((LivingEntity)e).getMaxHealth());
                     e.setCustomName(Utils.color("&7Cave Spider &8[&a100&7/&a100&8]"));
                     e.setCustomNameVisible(true);
-                    spawns.add(loc);
+                    mobSpawns.add(loc);
+                    addMobToReset(dungeon,e);
                     return;
                 }
                 // Husk 10%
                 if (roll <= 85) {
-                    Entity e = dungeon.getWorld().spawnEntity(loc, EntityType.HUSK);
+                    LivingEntity e = (LivingEntity) dungeon.getWorld().spawnEntity(loc, EntityType.HUSK);
                     ((LivingEntity)e).setMaxHealth(100);
                     ((LivingEntity)e).setHealth(((LivingEntity)e).getMaxHealth());
                     e.setCustomName(Utils.color("&7Husk &8[&a100&7/&a100&8]"));
                     e.setCustomNameVisible(true);
-                    spawns.add(loc);
+                    mobSpawns.add(loc);
+                    addMobToReset(dungeon,e);
                     return;
                 }
                 // Stray 10%
                 if (roll <= 95) {
-                    Entity e = dungeon.getWorld().spawnEntity(loc, EntityType.STRAY);
+                    LivingEntity e = (LivingEntity) dungeon.getWorld().spawnEntity(loc, EntityType.STRAY);
                     ((LivingEntity)e).setMaxHealth(100);
                     ((LivingEntity)e).setHealth(((LivingEntity)e).getMaxHealth());
                     e.setCustomName(Utils.color("&7Stray &8[&a100&7/&a100&8]"));
                     e.setCustomNameVisible(true);
-                    spawns.add(loc);
+                    mobSpawns.add(loc);
+                    addMobToReset(dungeon,e);
                     return;
                 }
                 // Wither Skeleton 5%
                 if (roll <= 100) {
-                    Entity e = dungeon.getWorld().spawnEntity(loc, EntityType.WITHER_SKELETON);
+                    LivingEntity e = (LivingEntity) dungeon.getWorld().spawnEntity(loc, EntityType.WITHER_SKELETON);
                     ((LivingEntity)e).setMaxHealth(100);
                     ((LivingEntity)e).setHealth(((LivingEntity)e).getMaxHealth());
                     e.setCustomName(Utils.color("&7Wither Skeleton &8[&a100&7/&a100&8]"));
                     e.setCustomNameVisible(true);
-                    spawns.add(loc);
+                    mobSpawns.add(loc);
+                    addMobToReset(dungeon,e);
                 }
             }
         }

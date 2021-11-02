@@ -4,19 +4,15 @@ import me.dkflab.dungeoncrawler.commands.ClassCommand;
 import me.dkflab.dungeoncrawler.commands.DungeonCommand;
 import me.dkflab.dungeoncrawler.commands.ShopCommand;
 import me.dkflab.dungeoncrawler.commands.UpgradeCommand;
-import me.dkflab.dungeoncrawler.listeners.BlockBreak;
-import me.dkflab.dungeoncrawler.listeners.ClickListener;
-import me.dkflab.dungeoncrawler.listeners.EntityDamage;
-import me.dkflab.dungeoncrawler.listeners.InventoryListener;
+import me.dkflab.dungeoncrawler.listeners.*;
 import me.dkflab.dungeoncrawler.managers.*;
 import me.dkflab.dungeoncrawler.objects.Dungeon;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public final class DungeonCrawler extends JavaPlugin {
 
-    public KitsManager kits;
+    public ClassManager classManager;
     public AbilityManager abilityManager;
     public GUIManager gui;
     public MatchmakingManager mm;
@@ -27,8 +23,8 @@ public final class DungeonCrawler extends JavaPlugin {
         saveDefaultConfig();
         registerListeners();
         registerCommands();
-        kits = new KitsManager(this);
         abilityManager = new AbilityManager(this);
+        classManager = new ClassManager(this);
         gui = new GUIManager(this);
         mm = new MatchmakingManager(this);
         dungeonManager = new DungeonManager(this);
@@ -53,10 +49,13 @@ public final class DungeonCrawler extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryListener(this),this);
         getServer().getPluginManager().registerEvents(new BlockBreak(this),this);
         getServer().getPluginManager().registerEvents(new EntityDamage(this),this);
+        getServer().getPluginManager().registerEvents(new DeathListener(this),this);
     }
 
     private void registerCommands() {
-        getCommand("class").setExecutor(new ClassCommand(this));
+        ClassCommand cc = new ClassCommand(this);
+        getCommand("class").setExecutor(cc);
+        getCommand("createclass").setExecutor(cc);
         getCommand("dungeon").setExecutor(new DungeonCommand(this));
         getCommand("upgrade").setExecutor(new UpgradeCommand(this));
         getCommand("shop").setExecutor(new ShopCommand(this));

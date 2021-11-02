@@ -39,11 +39,11 @@ public class ClassSelect implements InventoryHolder {
         Material mat = e.getCurrentItem().getType();
         Player p = (Player)e.getWhoClicked();
         if (mat.equals(Material.BLAZE_ROD)) {
-            main.getMM().setClassOfPlayer(p, main.kits.healer);
+            main.getMM().setClassOfPlayer(p, main.classManager.getKitByName("healer"));
             p.closeInventory();
         }
         if (mat.equals(Material.STONE_SWORD)) {
-            main.getMM().setClassOfPlayer(p, main.kits.tank);
+            main.getMM().setClassOfPlayer(p, main.classManager.getKitByName("tank"));
             p.closeInventory();
         }
     }

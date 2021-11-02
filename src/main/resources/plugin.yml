@@ -13,3 +13,6 @@ commands:
     description: Upgrade tools
   shop:
     description: Shop for tools
+  createclass:
+    description: Create a class
+    permission: dungeon.admin

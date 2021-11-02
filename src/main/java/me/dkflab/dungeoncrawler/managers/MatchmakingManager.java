@@ -37,8 +37,17 @@ public class MatchmakingManager {
         p.teleport(dungeon.getSpawn());
         // open class selection gui
         p.openInventory(main.getGUI().classSelect.getInventory());
-        // todo: immunity
+        // todo: immunity, blindness
         p.sendMessage(Utils.color("&a&lGood luck! &7Remember to stick with your team."));
+    }
+
+    public boolean isPlayerInArena(Player p) {
+        for (Dungeon d : players.keySet()) {
+            if (players.get(d).contains(p)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setClassOfPlayer(Player p, Kit kit) {
@@ -50,6 +59,10 @@ public class MatchmakingManager {
         p.getInventory().setBoots(null);
         kit.giveToPlayer(p);
         p.removePotionEffect(PotionEffectType.BLINDNESS);
+    }
+
+    public List<Player> getPlayersInDungeon(Dungeon d) {
+        return players.get(d);
     }
 
     public Dungeon getDungeonOfPlayer(Player p) {
@@ -92,9 +105,11 @@ public class MatchmakingManager {
         // Teleport players out, reset blocks
         for (Player p : players.get(dungeon)) {
             p.teleport(main.getConfig().getLocation("spawn"));
-            players.remove(dungeon);
+            p.getInventory().clear();
         }
+        players.remove(dungeon);
         main.dungeonManager.resetBlocks(dungeon);
+        main.dungeonManager.resetMobs(dungeon);
     }
 
     public boolean hasGameStarted(Dungeon dungeon) {

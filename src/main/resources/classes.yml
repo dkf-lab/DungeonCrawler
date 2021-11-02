@@ -1,0 +1,148 @@
+classes:
+  Tank:
+    name: Tank
+    ability: strength
+    chestplate:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2730
+      type: CHAINMAIL_CHESTPLATE
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Chest
+          of Valor"}],"text":""}'
+        ItemFlags:
+          - HIDE_ENCHANTS
+          - HIDE_UNBREAKABLE
+        Unbreakable: true
+    leggings:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2730
+      type: CHAINMAIL_LEGGINGS
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Leggings
+          of Valor"}],"text":""}'
+        ItemFlags:
+          - HIDE_ENCHANTS
+          - HIDE_UNBREAKABLE
+        Unbreakable: true
+    boots:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2730
+      type: CHAINMAIL_BOOTS
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Boots
+          of Valor"}],"text":""}'
+        ItemFlags:
+          - HIDE_ENCHANTS
+          - HIDE_UNBREAKABLE
+        Unbreakable: true
+    weapon:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2730
+      type: STONE_SWORD
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Sword
+          of Power"}],"text":""}'
+        lore:
+          - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"A
+          powerful sword with"}],"text":""}'
+          - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"mysterious
+          markings."}],"text":""}'
+        enchants:
+          DAMAGE_ALL: 3
+        ItemFlags:
+          - HIDE_ENCHANTS
+          - HIDE_UNBREAKABLE
+        Unbreakable: true
+  Healer:
+    name: Healer
+    ability: heal
+    weapon:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2730
+      type: BLAZE_ROD
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Staff
+          of The Order"}],"text":""}'
+        lore:
+          - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Shiny
+          but causes"}],"text":""}'
+          - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"low
+          damage."}],"text":""}'
+        enchants:
+          DAMAGE_ALL: 10
+        ItemFlags:
+          - HIDE_ENCHANTS
+          - HIDE_ATTRIBUTES
+          - HIDE_UNBREAKABLE
+          - HIDE_DYE
+        Unbreakable: true
+    chestplate:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2730
+      type: LEATHER_CHESTPLATE
+      meta:
+        ==: ItemMeta
+        meta-type: LEATHER_ARMOR
+        display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"white","text":"Chest
+          of The Scholar"}],"text":""}'
+        ItemFlags:
+          - HIDE_ENCHANTS
+          - HIDE_ATTRIBUTES
+          - HIDE_UNBREAKABLE
+          - HIDE_DYE
+        Unbreakable: true
+        color:
+          ==: Color
+          RED: 255
+          BLUE: 255
+          GREEN: 255
+    leggings:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2730
+      type: LEATHER_LEGGINGS
+      meta:
+        ==: ItemMeta
+        meta-type: LEATHER_ARMOR
+        display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"white","text":"Leggings
+          of The Scholar"}],"text":""}'
+        ItemFlags:
+          - HIDE_ENCHANTS
+          - HIDE_ATTRIBUTES
+          - HIDE_UNBREAKABLE
+          - HIDE_DYE
+        Unbreakable: true
+        color:
+          ==: Color
+          RED: 255
+          BLUE: 255
+          GREEN: 255
+    boots:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2730
+      type: LEATHER_BOOTS
+      meta:
+        ==: ItemMeta
+        meta-type: LEATHER_ARMOR
+        display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"white","text":"Boots
+          of The Scholar"}],"text":""}'
+        ItemFlags:
+          - HIDE_ENCHANTS
+          - HIDE_ATTRIBUTES
+          - HIDE_UNBREAKABLE
+          - HIDE_DYE
+        Unbreakable: true
+        color:
+          ==: Color
+          RED: 255
+          BLUE: 255
+          GREEN: 255

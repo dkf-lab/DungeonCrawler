@@ -1,0 +1,23 @@
+abilities:
+  # Currently supports potions and healing radius
+  # potionType and potionTime
+  # healRadius and healAmount
+  strength:
+    name: "&d&lFury"
+    material: "enchanted_book"
+    cooldown: 30
+    description:
+      - "Give yourself strength"
+      - "for 10 seconds."
+    potionType: "strength"
+    potionTime: 10
+  heal:
+    name: "&d&lHeal"
+    material: "enchanted_book"
+    cooldown: 20
+    description:
+      - "Heals allies in a radius of"
+      - "20 blocks for 2 hearts."
+    healRadius: 20
+    # Measured in half hearts
+    healAmount: 4
