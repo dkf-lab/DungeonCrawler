@@ -3,6 +3,7 @@ package me.dkflab.dungeoncrawler.managers;
 import me.dkflab.dungeoncrawler.DungeonCrawler;
 import me.dkflab.dungeoncrawler.objects.Ability;
 import me.dkflab.dungeoncrawler.objects.Kit;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -42,8 +43,15 @@ public class ClassManager {
             if (k.getName().equalsIgnoreCase(name)) {
                 return k;
             }
+            if (k.getFancyName().equalsIgnoreCase(name)) {
+                return k;
+            }
         }
         return null;
+    }
+
+    public List<Kit> getLoadedKits() {
+        return loadedKits;
     }
 
     public List<Kit> loadedKits = new ArrayList<>();
@@ -51,14 +59,26 @@ public class ClassManager {
         for (String s : getConfig().getConfigurationSection("classes").getKeys(false)) {
             ConfigurationSection sec = getConfig().getConfigurationSection("classes").getConfigurationSection(s);
             ItemStack weapon;
-            String name = sec.getString("name");
+            String name = s;
+            String fancyName = sec.getString("name");
+            int slot = sec.getInt("slot");
+            if (slot == 0) {
+                Bukkit.getLogger().severe("You MUST set a slot for your class in classes.yml");
+            }
             List<ItemStack> armor = new ArrayList<>();
             armor.add(sec.getItemStack("helmet"));
             armor.add(sec.getItemStack("chestplate"));
             armor.add(sec.getItemStack("leggings"));
             armor.add(sec.getItemStack("boots"));
             weapon = sec.getItemStack("weapon");
-            loadedKits.add(new Kit(name,weapon,armor,main.abilityManager.getAbilityFromName(sec.getString("ability"))));
+            Material mat;
+            if (sec.getString("iconMaterial") != null) {
+                mat = Material.getMaterial(sec.getString("iconMaterial").toUpperCase());
+            } else {
+                Bukkit.getLogger().severe("You MUST set a iconMaterial for your class in classes.yml");
+                mat = Material.BARRIER;
+            }
+            loadedKits.add(new Kit(name,fancyName,weapon,armor,main.abilityManager.getAbilityFromName(sec.getString("ability")),mat,slot));
         }
     }
 

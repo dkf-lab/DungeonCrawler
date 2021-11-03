@@ -41,6 +41,7 @@ public class DungeonCommand implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("help")) {
                     sender.sendMessage(Utils.color("&b&lDungeon Help"));
                     sender.sendMessage(Utils.color("&e/dungeon config <dungeon> <boss/spawn/mobs>"));
+                    sender.sendMessage(Utils.color("&e/dungeon config <lobby>"));
                     return true;
                 }
                 if (args[0].equalsIgnoreCase("config")) {
@@ -58,7 +59,7 @@ public class DungeonCommand implements CommandExecutor {
                         return true;
                     }
                 }
-                sender.sendMessage(Utils.color("&c/dungeon config <spawn>"));
+                sender.sendMessage(Utils.color("&c/dungeon config <lobby>"));
                 return true;
             }
             if (args.length == 3) {

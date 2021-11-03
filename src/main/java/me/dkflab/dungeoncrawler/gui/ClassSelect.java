@@ -2,6 +2,8 @@ package me.dkflab.dungeoncrawler.gui;
 
 import me.dkflab.dungeoncrawler.DungeonCrawler;
 import me.dkflab.dungeoncrawler.Utils;
+import me.dkflab.dungeoncrawler.objects.Dungeon;
+import me.dkflab.dungeoncrawler.objects.Kit;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -31,20 +33,21 @@ public class ClassSelect implements InventoryHolder {
         }
         HashMap<Enchantment, Integer> enchants = new HashMap();
         enchants.put(Enchantment.LUCK, 1);
-        inv.setItem(21, Utils.createItem(Material.BLAZE_ROD, 1, "&6&lHealer", Collections.singletonList("&7Select the 'Healer' class."), enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
-        inv.setItem(23, Utils.createItem(Material.STONE_SWORD, 1, "&f&lTank", Collections.singletonList("&7Select the 'Tank' class."), enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
+        for (Kit c: main.classManager.getLoadedKits()) {
+            inv.setItem(c.getSlot(), Utils.createItem(c.getIconMaterial(), 1, c.getFancyName(), Collections.singletonList("&7Select the '" + c.getName() + "&7' class."), enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
+        }
     }
 
     public void listener(InventoryClickEvent e) {
-        Material mat = e.getCurrentItem().getType();
         Player p = (Player)e.getWhoClicked();
-        if (mat.equals(Material.BLAZE_ROD)) {
-            main.getMM().setClassOfPlayer(p, main.classManager.getKitByName("healer"));
-            p.closeInventory();
-        }
-        if (mat.equals(Material.STONE_SWORD)) {
-            main.getMM().setClassOfPlayer(p, main.classManager.getKitByName("tank"));
-            p.closeInventory();
+        String s = e.getCurrentItem().getItemMeta().getDisplayName();
+
+        for (Kit c : main.classManager.getLoadedKits()) {
+            if (c.getFancyName().equalsIgnoreCase(s)) {
+                main.getMM().setClassOfPlayer(p,c);
+                p.closeInventory();
+                return;
+            }
         }
     }
 

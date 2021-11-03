@@ -6,6 +6,7 @@ import me.dkflab.dungeoncrawler.objects.Dungeon;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 
@@ -17,7 +18,6 @@ import java.util.List;
 public class DungeonManager {
 
     HashMap<Dungeon, HashMap<Block,Material>> blocksToReset = new HashMap<>();
-    HashMap<Block, Material> temp = new HashMap<>();
     List<Location> mobSpawns = new ArrayList<>();
     HashMap<Dungeon, List<LivingEntity>> liveMobs = new HashMap<>();
 
@@ -36,9 +36,10 @@ public class DungeonManager {
     }
 
     public void addItemToReset(Dungeon d, Block block, Material original) {
-        temp.clear();
-        blocksToReset.putIfAbsent(d,temp);
-        temp = blocksToReset.get(d);
+        HashMap<Block, Material> temp = new HashMap<>();
+        if (blocksToReset.get(d) != null) {
+            temp = blocksToReset.get(d);
+        }
         temp.put(block, original);
         blocksToReset.put(d,temp);
     }
@@ -60,8 +61,7 @@ public class DungeonManager {
         for (Block b : blocksToReset.get(dungeon).keySet()) {
             b.setType(blocksToReset.get(dungeon).get(b));
         }
-        temp.clear();
-        blocksToReset.put(dungeon,temp);
+        blocksToReset.remove(dungeon);
     }
 
     public void resetMobs(Dungeon dungeon) {
@@ -105,6 +105,7 @@ public class DungeonManager {
                 }
                 // Zombie 20%
                 Bukkit.getLogger().info("Roll: " + roll);
+                p.playSound(loc, Sound.ENTITY_PHANTOM_HURT, 3.0F,0.5F);
                 if (roll <= 20) {
                     LivingEntity e = (LivingEntity) dungeon.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
                     ((LivingEntity)e).setMaxHealth(100);

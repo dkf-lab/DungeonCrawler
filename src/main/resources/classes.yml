@@ -1,7 +1,9 @@
 classes:
   Tank:
-    name: Tank
+    name: "&f&lTank"
     ability: strength
+    slot: 23
+    iconMaterial: stone_sword
     chestplate:
       ==: org.bukkit.inventory.ItemStack
       v: 2730
@@ -62,7 +64,9 @@ classes:
           - HIDE_UNBREAKABLE
         Unbreakable: true
   Healer:
-    name: Healer
+    name: "&6&lHealer"
+    iconMaterial: blaze_rod
+    slot: 21
     ability: heal
     weapon:
       ==: org.bukkit.inventory.ItemStack

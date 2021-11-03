@@ -57,7 +57,7 @@ public class MatchmakingManager {
         p.getInventory().setChestplate(null);
         p.getInventory().setLeggings(null);
         p.getInventory().setBoots(null);
-        kit.giveToPlayer(p);
+        kit.giveToPlayer(p, main.upgradeManager);
         p.removePotionEffect(PotionEffectType.BLINDNESS);
     }
 
@@ -103,11 +103,16 @@ public class MatchmakingManager {
 
     public void resetDungeon(Dungeon dungeon) {
         // Teleport players out, reset blocks
-        for (Player p : players.get(dungeon)) {
-            p.teleport(main.getConfig().getLocation("spawn"));
-            p.getInventory().clear();
+        if (players.get(dungeon) != null) {
+            for (Player p : players.get(dungeon)) {
+                p.teleport(main.getConfig().getLocation("spawn"));
+                p.getInventory().clear();
+                for (PotionEffect pe : p.getActivePotionEffects()) {
+                    p.removePotionEffect(pe.getType());
+                }
+            }
+            players.remove(dungeon);
         }
-        players.remove(dungeon);
         main.dungeonManager.resetBlocks(dungeon);
         main.dungeonManager.resetMobs(dungeon);
     }

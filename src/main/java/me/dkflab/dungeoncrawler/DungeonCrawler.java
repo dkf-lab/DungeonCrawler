@@ -1,9 +1,6 @@
 package me.dkflab.dungeoncrawler;
 
-import me.dkflab.dungeoncrawler.commands.ClassCommand;
-import me.dkflab.dungeoncrawler.commands.DungeonCommand;
-import me.dkflab.dungeoncrawler.commands.ShopCommand;
-import me.dkflab.dungeoncrawler.commands.UpgradeCommand;
+import me.dkflab.dungeoncrawler.commands.*;
 import me.dkflab.dungeoncrawler.listeners.*;
 import me.dkflab.dungeoncrawler.managers.*;
 import me.dkflab.dungeoncrawler.objects.Dungeon;
@@ -17,6 +14,8 @@ public final class DungeonCrawler extends JavaPlugin {
     public GUIManager gui;
     public MatchmakingManager mm;
     public DungeonManager dungeonManager;
+    public CurrencyManager currencyManager;
+    public UpgradeManager upgradeManager;
 
     @Override
     public void onEnable() {
@@ -28,6 +27,8 @@ public final class DungeonCrawler extends JavaPlugin {
         gui = new GUIManager(this);
         mm = new MatchmakingManager(this);
         dungeonManager = new DungeonManager(this);
+        currencyManager = new CurrencyManager(this);
+        upgradeManager = new UpgradeManager(this);
         RecipeManager.init();
 
         BukkitRunnable run = new BukkitRunnable() {
@@ -50,6 +51,7 @@ public final class DungeonCrawler extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockBreak(this),this);
         getServer().getPluginManager().registerEvents(new EntityDamage(this),this);
         getServer().getPluginManager().registerEvents(new DeathListener(this),this);
+        getServer().getPluginManager().registerEvents(new PlayerLeave(this),this);
     }
 
     private void registerCommands() {
@@ -59,6 +61,7 @@ public final class DungeonCrawler extends JavaPlugin {
         getCommand("dungeon").setExecutor(new DungeonCommand(this));
         getCommand("upgrade").setExecutor(new UpgradeCommand(this));
         getCommand("shop").setExecutor(new ShopCommand(this));
+        getCommand("balance").setExecutor(new BalanceCommand(this));
     }
 
     public GUIManager getGUI() {

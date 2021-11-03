@@ -1,6 +1,7 @@
 package me.dkflab.dungeoncrawler.listeners;
 
 import me.dkflab.dungeoncrawler.DungeonCrawler;
+import me.dkflab.dungeoncrawler.Utils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -24,27 +25,16 @@ public class BlockBreak implements Listener {
             e.setCancelled(true);
             Material m = e.getBlock().getType();
             Block b = e.getBlock();
-            if (m.equals(Material.DIAMOND_ORE)) {
-                method(p, b,Material.DIAMOND);
-            }
             if (m.equals(Material.EMERALD_ORE)) {
-                method(p,b,Material.EMERALD);
-            }
-            if (m.equals(Material.IRON_ORE)) {
-                method(p,b,Material.IRON_INGOT);
-            }
-            if (m.equals(Material.GOLD_ORE)) {
-                method(p,b,Material.GOLD_INGOT);
-            }
-            if (m.equals(Material.COAL_ORE)) {
-                method(p,b,Material.COAL);
+                method(p, b, Material.EMERALD);
             }
         }
     }
 
     private void method(Player p, Block block, Material m) {
         main.dungeonManager.addItemToReset(main.getMM().getDungeonOfPlayer(p),block,block.getType());
-        p.getInventory().addItem(new ItemStack(m, 1));
+        main.currencyManager.addEmeralds(p.getUniqueId(), 1);
+        p.sendMessage(Utils.color("&7You now have &a" + main.currencyManager.getEmeralds(p.getUniqueId()) + " emeralds&7."));
         block.setType(Material.BEDROCK);
     }
 }

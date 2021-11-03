@@ -11,10 +11,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+
+import static me.dkflab.dungeoncrawler.Utils.color;
 
 public class ShopScreen implements InventoryHolder {
 
@@ -34,15 +33,39 @@ public class ShopScreen implements InventoryHolder {
         HashMap<Enchantment, Integer> enchants = new HashMap();
         enchants.put(Enchantment.LUCK, 1);
         List<String> lore = new ArrayList<>();
-        lore.add(Utils.color("&7A sharper sword."));
-        lore.add(Utils.color("&r"));
-        lore.add(Utils.color("&6Price: &a5x Emerald"));
-        inv.setItem(22, Utils.createItem(Material.DIAMOND_SWORD, 1, "&b&lDiamond Sword", lore, enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
+        lore.add(color("&7Upgrade your weapon's power."));
+        lore.add(color("&r"));
+        lore.add(color("&6Price: &a50 Emeralds"));
+        inv.setItem(21, Utils.createItem(Material.DIAMOND_SWORD, 1, "&f&lUpgrade Weapons", lore, enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
+        lore.clear();
+        lore.add(color("&7Upgrade your armor's protection."));
+        lore.add(color("&r"));
+        lore.add(color("&6Price: &a50 Emeralds"));
+        inv.setItem(23, Utils.createItem(Material.DIAMOND_CHESTPLATE, 1, "&f&lUpgrade Armor", lore, enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
     }
 
     public void listener(InventoryClickEvent e) {
         Material mat = e.getCurrentItem().getType();
         Player p = (Player)e.getWhoClicked();
+        UUID u = p.getUniqueId();
+        if (mat.equals(Material.DIAMOND_SWORD)) {
+            if (main.currencyManager.purchase(u, 50)) {
+                main.upgradeManager.addWeaponLevel(u,1);
+                p.closeInventory();
+                p.sendMessage(color("&a&lPurchase success!"));
+            } else {
+                p.sendMessage(color("&c&l[!] &7Insufficient funds!"));
+            }
+        }
+        if (mat.equals(Material.DIAMOND_CHESTPLATE)) {
+            if (main.currencyManager.purchase(u, 50)) {
+                main.upgradeManager.addArmorLevel(u,1);
+                p.closeInventory();
+                p.sendMessage(color("&a&lPurchase success!"));
+            } else {
+                p.sendMessage(color("&c&l[!] &7Insufficient funds!"));
+            }
+        }
     }
 
     @Override

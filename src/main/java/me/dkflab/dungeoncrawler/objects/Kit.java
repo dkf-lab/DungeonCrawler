@@ -1,11 +1,14 @@
 package me.dkflab.dungeoncrawler.objects;
 
+import me.dkflab.dungeoncrawler.Utils;
+import me.dkflab.dungeoncrawler.managers.UpgradeManager;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,13 +18,17 @@ import static me.dkflab.dungeoncrawler.Utils.createItem;
 
 public class Kit {
 
-    private String name;
+    private String name,fancyName;
     private List<ItemStack> armor = new ArrayList<>();
     private ItemStack pickaxe, weapon;
     private Ability ability;
+    Material icon;
+    int slot;
 
-    public Kit(String name, ItemStack weapon, List<ItemStack> armor, Ability ability) {
+    public Kit(String name, String fancyName, ItemStack weapon, List<ItemStack> armor, Ability ability, Material icon, int slot) {
         this.name = name;
+        this.fancyName = fancyName;
+        this.slot = slot;
         for (ItemStack i : armor) {
             if (i != null) {
                 this.armor.add(addFlags(i));
@@ -30,6 +37,7 @@ public class Kit {
         this.armor = armor;
         this.ability = ability;
         this.weapon = addFlags(weapon);
+        this.icon = icon;
 
         List<String> lore = new ArrayList<>();
         lore.add("&7A portable drill,");
@@ -41,6 +49,14 @@ public class Kit {
         flags.add(ItemFlag.HIDE_UNBREAKABLE);
         flags.add(ItemFlag.HIDE_ENCHANTS);
         this.pickaxe = createItem(Material.GOLDEN_PICKAXE,1,"&9&lDrill", lore,enchants,flags,true);
+    }
+
+    public Material getIconMaterial() {
+        return this.icon;
+    }
+
+    public int getSlot() {
+        return this.slot;
     }
 
     private ItemStack addFlags(ItemStack i) {
@@ -56,6 +72,10 @@ public class Kit {
     
     public String getName() {
         return this.name;
+    }
+
+    public String getFancyName() {
+        return Utils.color(this.fancyName);
     }
 
     public ItemStack getWeapon() {
@@ -74,15 +94,30 @@ public class Kit {
         return this.pickaxe;
     }
 
-    public void giveToPlayer(Player p) {
+    public void giveToPlayer(Player p, UpgradeManager m) {
         PlayerInventory inv = p.getInventory();
-        inv.addItem(this.weapon);
+        ItemStack w = this.weapon;
+        ItemMeta meta = w.getItemMeta();
+        meta.addEnchant(Enchantment.DAMAGE_ALL, meta.getEnchantLevel(Enchantment.DAMAGE_ALL)+m.getArmorLevel(p.getUniqueId()), true);
+        w.setItemMeta(meta);
+        inv.addItem(w);
         inv.addItem(this.ability.getItem());
         inv.addItem(this.pickaxe);
-        inv.setHelmet(getHelmet());
-        inv.setChestplate(getChestplate());
-        inv.setLeggings(getLeggings());
-        inv.setBoots(getBoots());
+
+        inv.setHelmet(addArmorLevels(getHelmet(),m,p));
+        inv.setChestplate(addArmorLevels(getChestplate(),m,p));
+        inv.setLeggings(addArmorLevels(getLeggings(),m,p));
+        inv.setBoots(addArmorLevels(getBoots(),m,p));
+    }
+
+    private ItemStack addArmorLevels(ItemStack i, UpgradeManager m, Player p) {
+        if (i == null) {
+            return null;
+        }
+        ItemMeta meta = i.getItemMeta();
+        meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, meta.getEnchantLevel(Enchantment.PROTECTION_ENVIRONMENTAL)+m.getArmorLevel(p.getUniqueId()),true);
+        i.setItemMeta(meta);
+        return i;
     }
 
     public ItemStack getHelmet() {

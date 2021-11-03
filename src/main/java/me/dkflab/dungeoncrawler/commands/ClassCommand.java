@@ -31,7 +31,7 @@ public class ClassCommand implements CommandExecutor {
             Player p = (Player)sender;
             if (p.hasPermission("dungeon.admin")) {
                 if (args.length == 1) {
-                    main.classManager.getKitByName(args[0]).giveToPlayer(p);
+                    main.classManager.getKitByName(args[0]).giveToPlayer(p,main.upgradeManager);
                 }
             } else {
                 p.sendMessage(color("&7Use &c/dungeon &7to select a class."));

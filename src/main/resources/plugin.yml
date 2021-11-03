@@ -16,3 +16,6 @@ commands:
   createclass:
     description: Create a class
     permission: dungeon.admin
+  balance:
+    description: Check balance in emeralds
+    aliases: [bal, emeralds, emerald]
