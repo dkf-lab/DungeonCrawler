@@ -24,11 +24,11 @@ public final class DungeonCrawler extends JavaPlugin {
         registerCommands();
         abilityManager = new AbilityManager(this);
         classManager = new ClassManager(this);
-        gui = new GUIManager(this);
         mm = new MatchmakingManager(this);
         dungeonManager = new DungeonManager(this);
         currencyManager = new CurrencyManager(this);
         upgradeManager = new UpgradeManager(this);
+        gui = new GUIManager(this);
         RecipeManager.init();
 
         BukkitRunnable run = new BukkitRunnable() {

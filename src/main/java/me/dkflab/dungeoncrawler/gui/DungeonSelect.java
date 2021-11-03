@@ -2,6 +2,7 @@ package me.dkflab.dungeoncrawler.gui;
 
 import me.dkflab.dungeoncrawler.DungeonCrawler;
 import me.dkflab.dungeoncrawler.Utils;
+import me.dkflab.dungeoncrawler.objects.Dungeon;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -31,15 +32,21 @@ public class DungeonSelect implements InventoryHolder {
         }
         HashMap<Enchantment, Integer> enchants = new HashMap();
         enchants.put(Enchantment.LUCK, 1);
-        inv.setItem(21, Utils.createItem(Material.STRING, 1, "&dDungeon One", Collections.singletonList("&7Enter the first dungeon."), enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
-        inv.setItem(22, Utils.createItem(Material.BONE, 2, "&dDungeon Two", Collections.singletonList("&7Enter the second dungeon."), enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
-        inv.setItem(23, Utils.createItem(Material.SPIDER_EYE, 3, "&dDungeon Three", Collections.singletonList("&7Enter the third dungeon."), enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
+
+        for (Dungeon d : main.dungeonManager.getActiveDungeons()) {
+            inv.setItem(d.getSlot(), Utils.createItem(d.getMaterial(), 1, d.getFancyName(), Collections.singletonList("&7Enter the dungeon!"),enchants,Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
+        }
     }
 
     public void listener(InventoryClickEvent e) {
-        Material mat = e.getCurrentItem().getType();
-        if (mat.equals(Material.STRING)) {
-            main.getMM().addPlayerToDungeon((Player) e.getWhoClicked(),main.dungeonManager.one);
+        if (e.getCurrentItem() == null) {
+            return;
+        }
+        String s = e.getCurrentItem().getItemMeta().getDisplayName();
+        for (Dungeon d : main.dungeonManager.getActiveDungeons()) {
+            if (s.equalsIgnoreCase(d.getFancyName())) {
+                main.getMM().addPlayerToDungeon((Player)e.getWhoClicked(), d);
+            }
         }
     }
 

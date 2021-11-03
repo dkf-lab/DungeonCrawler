@@ -37,7 +37,6 @@ public class MatchmakingManager {
         p.teleport(dungeon.getSpawn());
         // open class selection gui
         p.openInventory(main.getGUI().classSelect.getInventory());
-        // todo: immunity, blindness
         p.sendMessage(Utils.color("&a&lGood luck! &7Remember to stick with your team."));
     }
 

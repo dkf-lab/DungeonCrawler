@@ -29,10 +29,12 @@ public class DungeonManager {
 
     public Dungeon one;
 
+    List<Dungeon> activeDungeons = new ArrayList<>();
+
     private void init() {
-        //main.getConfig().getConfigurationSection("dungeons").getKeys(false);
-        // TODO: properly
-        one = new Dungeon(main.getConfig().getConfigurationSection("dungeons.one"));
+        for (String s : main.getConfig().getConfigurationSection("dungeons").getKeys(false)) {
+            activeDungeons.add(new Dungeon(main.getConfig().getConfigurationSection("dungeons").getConfigurationSection(s)));
+        }
     }
 
     public void addItemToReset(Dungeon d, Block block, Material original) {
@@ -71,11 +73,7 @@ public class DungeonManager {
     }
 
     public List<Dungeon> getActiveDungeons() {
-        // todo: properly
-        if (main.getMM().hasGameStarted(one)) {
-            return Collections.singletonList(one);
-        }
-        return null;
+        return activeDungeons;
     }
 
     public void spawnMobs(Dungeon dungeon) {

@@ -9,7 +9,65 @@ spawn:
 dungeons:
   one:
     # Name of dungeon
-    name: 'One'
+    name: '&d&lDungeon One'
+    # slot in gui
+    slot: 21
+    # material in select screen
+    material: "string"
+    # World of dungeon
+    world: 'world'
+    # Spawn point for players
+    spawn:
+      x: 1
+      y: 1
+      z: 1
+      yaw: 0
+      pitch: 0
+    # Spawn point for boss mob
+    bossSpawn:
+      x: 1
+      y: 1
+      z: 1
+    # Spawn points for mobs
+    mobSpawns:
+      loc1:
+        x: 1
+        y: 1
+        z: 1
+  two:
+    # Name of dungeon
+    name: '&d&lDungeon Two'
+    # slot in gui
+    slot: 22
+    # material in select screen
+    material: "bone"
+    # World of dungeon
+    world: 'world'
+    # Spawn point for players
+    spawn:
+      x: 1
+      y: 1
+      z: 1
+      yaw: 0
+      pitch: 0
+    # Spawn point for boss mob
+    bossSpawn:
+      x: 1
+      y: 1
+      z: 1
+    # Spawn points for mobs
+    mobSpawns:
+      loc1:
+        x: 1
+        y: 1
+        z: 1
+  three:
+    # Name of dungeon
+    name: '&d&lDungeon Three'
+    # slot in gui
+    slot: 23
+    # material in select screen
+    material: "spider_eye"
     # World of dungeon
     world: 'world'
     # Spawn point for players
