@@ -43,18 +43,24 @@ public class EntityDamage implements Listener {
         LivingEntity en = e.getEntity();
         if (en.getCustomName() != null) {
             Player p = en.getKiller();
+            if (p == null) {
+                return;
+            }
             if (en.getCustomName().contains("Boss")) {
-                main.currencyManager.addEmeralds(p.getUniqueId(), 15);
-                p.sendMessage(color("&7You now have &a" + main.currencyManager.getEmeralds(p.getUniqueId()) + " emeralds&7."));
-                p.sendTitle(color("&6&lYOU WON!"), color("&7Congratulations on surviving the dungeon!"), 20, 20*3, 20);
-                p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, Integer.MAX_VALUE, 255, false, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1, false,false,false));
+                for (Player all : main.getMM().getPlayersInDungeon(main.getMM().getDungeonOfPlayer(p))) {
+                    main.currencyManager.addEmeralds(all.getUniqueId(), 15);
+                    all.sendMessage(color("&7You now have &a" + main.currencyManager.getEmeralds(all.getUniqueId()) + " emeralds&7."));
+                    all.sendTitle(color("&6&lYOU WON!"), color("&7Congratulations on surviving the dungeon!"), 20, 20*3, 20);
+                    all.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, Integer.MAX_VALUE, 255, false, false, false));
+                    all.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1, false,false,false));
+                }
+
                 e.getDrops().clear();
 
                 BukkitRunnable run = new BukkitRunnable() {
                     @Override
                     public void run() {
-                        main.getMM().resetDungeon(main.dungeonManager.one);
+                        main.getMM().resetDungeon(main.getMM().getDungeonOfPlayer(p));
                     }
                 };
 

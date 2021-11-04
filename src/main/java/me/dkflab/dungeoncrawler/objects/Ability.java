@@ -33,7 +33,7 @@ public class Ability {
         this.cooldown = s.getInt("cooldown");
         // potion
         if (s.getString("potionType") != null) {
-            this.potionEffect = PotionEffectType.getByName(s.getString("potionType"));
+            this.potionEffect = PotionEffectType.getByName(s.getString("potionType").toUpperCase());
         }
         this.potDur = s.getInt("potionTime");
         // healing
@@ -64,7 +64,7 @@ public class Ability {
         if (this.potionEffect == null) {
             return null;
         }
-        return new PotionEffect(potionEffect,potDur,1,false,false,false);
+        return new PotionEffect(potionEffect,potDur*20,1,false,false,false);
     }
 
     public int getHealRadius() {

@@ -3,6 +3,7 @@ package me.dkflab.dungeoncrawler.managers;
 import me.dkflab.dungeoncrawler.DungeonCrawler;
 import me.dkflab.dungeoncrawler.Utils;
 import me.dkflab.dungeoncrawler.objects.Ability;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -79,6 +80,7 @@ public class AbilityManager {
             return;
         }
         p.addPotionEffect(a.getPotionEffect());
+        Bukkit.getLogger().info("Potion Effect: " + a.getPotionEffect());
         p.sendMessage(Utils.color("&aYour ability was successful!"));
         p.setCooldown(a.getItem().getType(), a.getCooldown()*20);
     }

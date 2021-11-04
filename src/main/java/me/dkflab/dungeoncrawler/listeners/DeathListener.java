@@ -34,12 +34,11 @@ public class DeathListener implements Listener {
             }
             p.removePotionEffect(PotionEffectType.WITHER);
             p.setFoodLevel(20);
-            Bukkit.getLogger().severe(main.getConfig().getLocation("spawn").toString());
             if (main.getMM().getPlayersInDungeon(d) == null) {
-                main.getMM().resetDungeon(main.getMM().getDungeonOfPlayer(p));
+                main.getMM().resetDungeon(d);
             }
             if (main.getMM().getPlayersInDungeon(d).isEmpty()) {
-                main.getMM().resetDungeon(main.getMM().getDungeonOfPlayer(p));
+                main.getMM().resetDungeon(d);
             }
         }
     }

@@ -9,7 +9,8 @@ abilities:
     description:
       - "Give yourself strength"
       - "for 10 seconds."
-    potionType: "strength"
+    # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
+    potionType: "increase_damage"
     potionTime: 10
   heal:
     name: "&d&lHeal"

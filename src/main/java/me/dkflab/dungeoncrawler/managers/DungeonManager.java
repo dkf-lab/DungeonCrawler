@@ -27,8 +27,6 @@ public class DungeonManager {
         init();
     }
 
-    public Dungeon one;
-
     List<Dungeon> activeDungeons = new ArrayList<>();
 
     private void init() {
@@ -76,8 +74,7 @@ public class DungeonManager {
         return activeDungeons;
     }
 
-    public void spawnMobs(Dungeon dungeon) {
-        // mob spawning handled by loop()
+    public void spawnBoss(Dungeon dungeon) {
         WitherSkeleton en = (WitherSkeleton) dungeon.getWorld().spawnEntity(dungeon.getBossSpawn(),EntityType.WITHER_SKELETON);
         en.setMaxHealth(300);
         en.setHealth(en.getMaxHealth());
@@ -97,6 +94,14 @@ public class DungeonManager {
     private void spawnMob(Location loc, Dungeon dungeon) {
         int roll = Utils.randomNumber(0,100);
         for (Player p : Bukkit.getOnlinePlayers()) {
+            if (main.getMM().getDungeonOfPlayer(p) != dungeon) {
+                return;
+            }
+            // Boss spawning
+            if (dungeon.getBossSpawn().distanceSquared(p.getLocation()) <= 30) {
+                spawnBoss(dungeon);
+            }
+            // Mob spawning
             if (loc.distanceSquared(p.getLocation()) <= 10) {
                 if (mobSpawns.contains(loc)) {
                     return;

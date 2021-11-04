@@ -4,6 +4,7 @@ import me.dkflab.dungeoncrawler.DungeonCrawler;
 import me.dkflab.dungeoncrawler.Utils;
 import me.dkflab.dungeoncrawler.objects.Dungeon;
 import me.dkflab.dungeoncrawler.objects.Kit;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -24,14 +25,16 @@ public class MatchmakingManager {
     HashMap<Player, Kit> classes = new HashMap<>();
 
     public void addPlayerToDungeon(Player p, Dungeon dungeon) {
-        if (!hasGameStarted(dungeon)) {
-            main.dungeonManager.spawnMobs(dungeon);
+        List<Player> list;
+        if (players.get(dungeon) != null) {
+            list = players.get(dungeon);
+        } else {
+            list = new ArrayList<>();
         }
-        temp.clear();
-        players.putIfAbsent(dungeon, temp);
-        temp = players.get(dungeon);
-        temp.add(p);
-        players.put(dungeon,temp);
+        list.add(p);
+        Bukkit.getLogger().info("List being placed:  " + list.toString());
+        Bukkit.getLogger().info("Dungeon ID : " + dungeon);
+        players.put(dungeon,list);
         //
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE,255,false,false,false));
         p.teleport(dungeon.getSpawn());
@@ -102,6 +105,8 @@ public class MatchmakingManager {
 
     public void resetDungeon(Dungeon dungeon) {
         // Teleport players out, reset blocks
+        Bukkit.getLogger().info("DUNGEON ID:   " + dungeon);
+        Bukkit.getLogger().info("Players list: " + players.get(dungeon));
         if (players.get(dungeon) != null) {
             for (Player p : players.get(dungeon)) {
                 p.teleport(main.getConfig().getLocation("spawn"));
