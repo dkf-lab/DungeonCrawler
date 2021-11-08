@@ -99,6 +99,9 @@ public class DungeonManager {
     private void spawnMob(Location loc, Dungeon dungeon) {
         int roll = Utils.randomNumber(0,100);
         for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.getWorld() != loc.getWorld()) {
+                return;
+            }
             if (main.getMM().getDungeonOfPlayer(p) != dungeon) {
                 return;
             }
