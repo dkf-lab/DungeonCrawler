@@ -104,9 +104,6 @@ public class MatchmakingManager {
     }
 
     public void resetDungeon(Dungeon dungeon) {
-        // Teleport players out, reset blocks
-        Bukkit.getLogger().info("DUNGEON ID:   " + dungeon);
-        Bukkit.getLogger().info("Players list: " + players.get(dungeon));
         if (players.get(dungeon) != null) {
             for (Player p : players.get(dungeon)) {
                 p.teleport(main.getConfig().getLocation("spawn"));
@@ -117,6 +114,7 @@ public class MatchmakingManager {
             }
             players.remove(dungeon);
         }
+        main.barrelManager.resetMap();
         main.dungeonManager.resetBlocks(dungeon);
         main.dungeonManager.resetMobs(dungeon);
     }

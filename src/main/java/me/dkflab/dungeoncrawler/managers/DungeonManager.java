@@ -75,6 +75,11 @@ public class DungeonManager {
     }
 
     public void spawnBoss(Dungeon dungeon) {
+        for (LivingEntity e : liveMobs.get(dungeon)) {
+            if (e.getType().equals(EntityType.WITHER_SKELETON)) {
+                return;
+            }
+        }
         WitherSkeleton en = (WitherSkeleton) dungeon.getWorld().spawnEntity(dungeon.getBossSpawn(),EntityType.WITHER_SKELETON);
         en.setMaxHealth(300);
         en.setHealth(en.getMaxHealth());

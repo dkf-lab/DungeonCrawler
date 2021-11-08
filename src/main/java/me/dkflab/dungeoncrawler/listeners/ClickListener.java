@@ -1,6 +1,8 @@
 package me.dkflab.dungeoncrawler.listeners;
 
 import me.dkflab.dungeoncrawler.DungeonCrawler;
+import org.bukkit.Material;
+import org.bukkit.block.Barrel;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,6 +24,14 @@ public class ClickListener implements Listener {
             PlayerInventory inv = p.getInventory();
             // Ability check
             main.abilityManager.checkForAbility(p,inv.getItemInMainHand());
+            if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                if (e.getClickedBlock() == null) {
+                    return;
+                }
+                if (e.getClickedBlock().getType().equals(Material.BARREL)) {
+                    main.barrelManager.generateLootForBarrel((Barrel)e.getClickedBlock().getState());
+                }
+            }
         }
     }
 }

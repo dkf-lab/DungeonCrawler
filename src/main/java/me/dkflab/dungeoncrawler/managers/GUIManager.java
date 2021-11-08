@@ -11,8 +11,8 @@ import org.bukkit.inventory.InventoryHolder;
 public class GUIManager {
 
     private DungeonCrawler main;
-    public GUIManager(DungeonCrawler p) {
-        main = p;
+    public GUIManager(DungeonCrawler main) {
+        this.main = main;
         init();
     }
 

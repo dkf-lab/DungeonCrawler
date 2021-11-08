@@ -19,3 +19,7 @@ commands:
   balance:
     description: Check balance in emeralds
     aliases: [bal, emeralds, emerald]
+  barrel:
+    description: Add item to barrel
+    usage: /<command> <name>
+    permission: dungeon.admin

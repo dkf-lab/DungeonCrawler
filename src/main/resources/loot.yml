@@ -1,0 +1,26 @@
+# Make sure the percentages add up to 100 or you will get weird behaviour
+# itemstack: percentage chance
+percentages:
+  example: 100
+# Add itemstacks by using in-game command
+# /barrel <name>
+# Don't manually edit this part, you'll probably mess it up
+example:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2730
+  type: DIAMOND_SWORD
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"aqua","text":"Fancy Sword"}],"text":""}'
+    lore:
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Forged from diamonds"}],"text":""}'
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"in the depths."}],"text":""}'
+    enchants:
+      DAMAGE_ALL: 10
+    ItemFlags:
+      - HIDE_ENCHANTS
+      - HIDE_ATTRIBUTES
+      - HIDE_UNBREAKABLE
+      - HIDE_DYE
+    Unbreakable: true

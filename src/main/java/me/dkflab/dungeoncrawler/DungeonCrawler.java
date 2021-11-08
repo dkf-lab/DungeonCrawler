@@ -4,6 +4,7 @@ import me.dkflab.dungeoncrawler.commands.*;
 import me.dkflab.dungeoncrawler.listeners.*;
 import me.dkflab.dungeoncrawler.managers.*;
 import me.dkflab.dungeoncrawler.objects.Dungeon;
+import org.bukkit.block.Barrel;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -16,6 +17,7 @@ public final class DungeonCrawler extends JavaPlugin {
     public DungeonManager dungeonManager;
     public CurrencyManager currencyManager;
     public UpgradeManager upgradeManager;
+    public BarrelManager barrelManager;
 
     @Override
     public void onEnable() {
@@ -29,6 +31,7 @@ public final class DungeonCrawler extends JavaPlugin {
         currencyManager = new CurrencyManager(this);
         upgradeManager = new UpgradeManager(this);
         gui = new GUIManager(this);
+        barrelManager = new BarrelManager(this);
         RecipeManager.init();
 
         BukkitRunnable run = new BukkitRunnable() {
@@ -62,6 +65,7 @@ public final class DungeonCrawler extends JavaPlugin {
         getCommand("upgrade").setExecutor(new UpgradeCommand(this));
         getCommand("shop").setExecutor(new ShopCommand(this));
         getCommand("balance").setExecutor(new BalanceCommand(this));
+        getCommand("barrel").setExecutor(new BarrelCommand(this));
     }
 
     public GUIManager getGUI() {
