@@ -25,6 +25,7 @@ public class MatchmakingManager {
     HashMap<Player, Kit> classes = new HashMap<>();
 
     public void addPlayerToDungeon(Player p, Dungeon dungeon) {
+        p.teleport(dungeon.getSpawn());
         List<Player> list;
         if (players.get(dungeon) != null) {
             list = players.get(dungeon);
@@ -37,7 +38,6 @@ public class MatchmakingManager {
         players.put(dungeon,list);
         //
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE,255,false,false,false));
-        p.teleport(dungeon.getSpawn());
         // open class selection gui
         p.openInventory(main.getGUI().classSelect.getInventory());
         p.sendMessage(Utils.color("&a&lGood luck! &7Remember to stick with your team."));
@@ -54,7 +54,6 @@ public class MatchmakingManager {
 
     public void setClassOfPlayer(Player p, Kit kit) {
         classes.put(p, kit);
-        p.getInventory().clear();
         p.getInventory().setHelmet(null);
         p.getInventory().setChestplate(null);
         p.getInventory().setLeggings(null);
@@ -95,6 +94,14 @@ public class MatchmakingManager {
             if (temp.size() <= 1) {
                 resetDungeon(d);
             }
+            for (PotionEffect pe : p.getActivePotionEffects()) {
+                p.removePotionEffect(pe.getType());
+            }
+            p.getInventory().setHelmet(null);
+            p.getInventory().setChestplate(null);
+            p.getInventory().setLeggings(null);
+            p.getInventory().setBoots(null);
+            p.getInventory().removeItem(getClass(p).getWeapon(), getClass(p).getAbility().getItem(), getClass(p).getPickaxe());
             p.teleport(main.getConfig().getLocation("spawn"));
         }
     }
@@ -106,11 +113,7 @@ public class MatchmakingManager {
     public void resetDungeon(Dungeon dungeon) {
         if (players.get(dungeon) != null) {
             for (Player p : players.get(dungeon)) {
-                p.teleport(main.getConfig().getLocation("spawn"));
-                p.getInventory().clear();
-                for (PotionEffect pe : p.getActivePotionEffects()) {
-                    p.removePotionEffect(pe.getType());
-                }
+                removePlayerFromArena(p);
             }
             players.remove(dungeon);
         }

@@ -55,6 +55,7 @@ public final class DungeonCrawler extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityDamage(this),this);
         getServer().getPluginManager().registerEvents(new DeathListener(this),this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(this),this);
+        getServer().getPluginManager().registerEvents(new TeleportListener(this),this);
     }
 
     private void registerCommands() {

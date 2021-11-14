@@ -3,8 +3,9 @@ package me.dkflab.dungeoncrawler.managers;
 import me.dkflab.dungeoncrawler.DungeonCrawler;
 import me.dkflab.dungeoncrawler.gui.ClassSelect;
 import me.dkflab.dungeoncrawler.gui.DungeonSelect;
-import me.dkflab.dungeoncrawler.gui.ShopScreen;
 import me.dkflab.dungeoncrawler.gui.UpgradeScreen;
+import me.dkflab.dungeoncrawler.gui.ShopScreen;
+import me.dkflab.dungeoncrawler.gui.shops.PotionScreen;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -18,14 +19,16 @@ public class GUIManager {
 
     public DungeonSelect dungeonSelect;
     public ClassSelect classSelect;
-    public UpgradeScreen upgradeScreen;
     public ShopScreen shopScreen;
+    public UpgradeScreen upgradeScreen;
+    public PotionScreen potionScreen;
 
     private void init() {
         dungeonSelect = new DungeonSelect(main);
         classSelect = new ClassSelect(main);
-        upgradeScreen = new UpgradeScreen(main);
         shopScreen = new ShopScreen(main);
+        upgradeScreen = new UpgradeScreen(main);
+        potionScreen = new PotionScreen(main);
     }
 
     public void event(InventoryClickEvent e) {
@@ -39,13 +42,17 @@ public class GUIManager {
                 e.setCancelled(true);
                 classSelect.listener(e);
             }
+            if (i instanceof ShopScreen) {
+                e.setCancelled(true);
+                shopScreen.listener(e);
+            }
             if (i instanceof UpgradeScreen) {
                 e.setCancelled(true);
                 upgradeScreen.listener(e);
             }
-            if (i instanceof ShopScreen) {
+            if (i instanceof PotionScreen) {
                 e.setCancelled(true);
-                shopScreen.listener(e);
+                potionScreen.listener(e);
             }
         }
     }

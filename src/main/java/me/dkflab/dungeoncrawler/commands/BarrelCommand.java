@@ -27,6 +27,10 @@ public class BarrelCommand implements CommandExecutor {
                 return true;
             }
             Player p = (Player)sender;
+            if (!p.hasPermission("dungeon.admin")) {
+                Utils.noPerms(sender);
+                return true;
+            }
             ItemStack i = p.getInventory().getItemInMainHand();
             if (i.getType().equals(Material.AIR)) {
                 p.sendMessage(color("&7You need to &chold an item &7in your hand!"));

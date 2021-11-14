@@ -39,20 +39,34 @@ public class DungeonCommand implements CommandExecutor {
                     return true;
                 }
                 if (args[0].equalsIgnoreCase("help")) {
-                    sender.sendMessage(Utils.color("&b&lDungeon Help"));
-                    sender.sendMessage(Utils.color("&e/dungeon config <dungeon> <boss/spawn/mobs>"));
-                    sender.sendMessage(Utils.color("&e/dungeon config <lobby>"));
+                    if (sender.hasPermission("dungeon.admin")) {
+                        sender.sendMessage(Utils.color("&b&lDungeon Help"));
+                        sender.sendMessage(Utils.color("&e/dungeon config <dungeon> <boss/spawn/mobs>"));
+                        sender.sendMessage(Utils.color("&e/dungeon config <lobby>"));
+                    }
+                    p.openInventory(main.gui.dungeonSelect.getInventory());
                     return true;
                 }
                 if (args[0].equalsIgnoreCase("config")) {
-                    sender.sendMessage(Utils.color("&c/dungeon config <dungeon> <boss/spawn/mobs>"));
-                    sender.sendMessage(Utils.color("&c/dungeon config <lobby>"));
+                    if (sender.hasPermission("dungeon.admin")) {
+                        sender.sendMessage(Utils.color("&c/dungeon config <dungeon> <boss/spawn/mobs>"));
+                        sender.sendMessage(Utils.color("&c/dungeon config <lobby>"));
+                    }
+                    p.openInventory(main.gui.dungeonSelect.getInventory());
                     return true;
                 }
             }
             if (args.length == 2) {
                 if (args[0].equalsIgnoreCase("config")) {
+                    if (!p.hasPermission("dungeon.admin")) {
+                        Utils.noPerms(p);
+                        return true;
+                    }
                     if (args[1].equalsIgnoreCase("lobby")) {
+                        if (!p.hasPermission("dungeon.admin"))  {
+                            Utils.noPerms(sender);
+                            return true;
+                        }
                         main.getConfig().set("spawn", p.getLocation());
                         main.saveConfig();
                         p.sendMessage(Utils.color("&aLobby set to your location."));
@@ -64,6 +78,10 @@ public class DungeonCommand implements CommandExecutor {
             }
             if (args.length == 3) {
                 if (args[0].equalsIgnoreCase("config")) {
+                    if (!p.hasPermission("dungeon.admin")) {
+                        Utils.noPerms(p);
+                        return true;
+                    }
                     ConfigurationSection section = null;
                     for (String s : main.getConfig().getConfigurationSection("dungeons").getKeys(false)) {
                         if (s.equalsIgnoreCase(args[1])) {

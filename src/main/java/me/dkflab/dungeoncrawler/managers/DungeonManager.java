@@ -65,6 +65,9 @@ public class DungeonManager {
     }
 
     public void resetMobs(Dungeon dungeon) {
+        if (liveMobs.get(dungeon) == null) {
+            return;
+        }
         for (LivingEntity en : liveMobs.get(dungeon)) {
             en.remove();
         }

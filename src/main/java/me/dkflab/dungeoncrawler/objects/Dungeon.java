@@ -37,6 +37,11 @@ public class Dungeon {
         // mob spawns
         for (String s : section.getConfigurationSection("mobSpawns").getKeys(false)) {
             ConfigurationSection cs = section.getConfigurationSection("mobSpawns").getConfigurationSection(s);
+            if (cs == null) {
+                Bukkit.getLogger().severe("MOBSPAWNS ARE NOT CONFIGURED FOR DUNGEON " + name + "!");
+                Bukkit.getLogger().severe("YOUR DUNGEON WILL NOT FUNCTION PROPERLY");
+                return;
+            }
             this.mobSpawns.add(new Location(getWorld(), cs.getInt("x"),cs.getInt("y"),cs.getInt("z")));
         }
     }
@@ -50,6 +55,10 @@ public class Dungeon {
     }
 
     public World getWorld() {
+        if (Bukkit.getWorld(this.world) == null) {
+            Bukkit.getLogger().severe("World is null of dungeon.");
+        }
+        Bukkit.getLogger().info("World list: " + Bukkit.getWorlds());
         return Bukkit.getWorld(this.world);
     }
 

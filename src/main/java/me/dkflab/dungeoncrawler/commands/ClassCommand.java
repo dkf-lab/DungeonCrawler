@@ -43,6 +43,10 @@ public class ClassCommand implements CommandExecutor {
                 return true;
             }
             Player p = (Player)sender;
+            if (!p.hasPermission("dungeon.admin")) {
+                Utils.noPerms(p);
+                return true;
+            }
             if (args.length == 1) {
                 p.sendMessage(color("&bCreate Class Help"));
                 p.sendMessage(color("&e/createclass <name> <ability> &7- Run this command to create an entry under the config with an ability."));

@@ -23,7 +23,7 @@ public class UpgradeCommand implements CommandExecutor {
                 return true;
             }
             Player p = (Player)sender;
-            p.openInventory(main.gui.shopScreen.getInventory());
+            p.openInventory(main.gui.upgradeScreen.getInventory());
         }
         return true;
     }

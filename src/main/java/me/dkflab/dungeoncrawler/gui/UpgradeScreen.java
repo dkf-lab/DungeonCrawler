@@ -5,43 +5,71 @@ import me.dkflab.dungeoncrawler.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
+
+import static me.dkflab.dungeoncrawler.Utils.color;
 
 public class UpgradeScreen implements InventoryHolder {
 
     private final Inventory inv;
 
     private DungeonCrawler main;
-    public UpgradeScreen(DungeonCrawler m) {
-        main = m;
-        inv = Bukkit.createInventory(this,54,"Upgrade Items");
+    public UpgradeScreen(DungeonCrawler main) {
+        this.main = main;
+        inv = Bukkit.createInventory(this,45,"Upgrade Weapons and Armor");
         init();
     }
 
     private void init() {
-        for (int i = 0; i < 54; i++) {
+        for (int i = 0; i < 45; i++) {
             inv.setItem(i, Utils.blankPane());
         }
         HashMap<Enchantment, Integer> enchants = new HashMap();
         enchants.put(Enchantment.LUCK, 1);
-        inv.setItem(21, Utils.createItem(Material.DIAMOND_SWORD, 1, "&aInput", Collections.singletonList("&7Input item"), null, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
-        inv.setItem(30, Utils.createItem(Material.ENCHANTED_BOOK,1, "&aInput Enchantment Book", Collections.singletonList("&7Example book"), enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS),false));
-        inv.setItem(23, Utils.createItem(Material.DIAMOND_SWORD, 1, "&cOutput", Collections.singletonList("&7Output item"), enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
+        List<String> lore = new ArrayList<>();
+        lore.add(color("&7Upgrade your weapon's power."));
+        lore.add(color("&r"));
+        lore.add(color("&6Price: &a50 Emeralds"));
+        inv.setItem(21, Utils.createItem(Material.DIAMOND_SWORD, 1, "&f&lUpgrade Weapons", lore, enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
+        lore.clear();
+        lore.add(color("&7Upgrade your armor's protection."));
+        lore.add(color("&r"));
+        lore.add(color("&6Price: &a50 Emeralds"));
+        inv.setItem(23, Utils.createItem(Material.DIAMOND_CHESTPLATE, 1, "&f&lUpgrade Armor", lore, enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
     }
 
     public void listener(InventoryClickEvent e) {
         Material mat = e.getCurrentItem().getType();
+        Player p = (Player)e.getWhoClicked();
+        UUID u = p.getUniqueId();
+        if (mat.equals(Material.DIAMOND_SWORD)) {
+            if (main.currencyManager.purchase(u, 50)) {
+                main.upgradeManager.addWeaponLevel(u,1);
+                p.closeInventory();
+                p.sendMessage(color("&a&lPurchase success!"));
+            } else {
+                p.sendMessage(color("&c&l[!] &7Insufficient funds!"));
+            }
+        }
+        if (mat.equals(Material.DIAMOND_CHESTPLATE)) {
+            if (main.currencyManager.purchase(u, 50)) {
+                main.upgradeManager.addArmorLevel(u,1);
+                p.closeInventory();
+                p.sendMessage(color("&a&lPurchase success!"));
+            } else {
+                p.sendMessage(color("&c&l[!] &7Insufficient funds!"));
+            }
+        }
     }
 
     @Override
     public Inventory getInventory() {
         return inv;
     }
-
 }

@@ -37,6 +37,14 @@ public class CurrencyManager {
         return true;
     }
 
+    public void removeEmeralds(UUID uuid, int amount) {
+        if (getEmeralds(uuid) - amount < 0) {
+            setEmeralds(uuid, 0);
+            return;
+        }
+        setEmeralds(uuid, getEmeralds(uuid)-amount);
+    }
+
     public int getEmeralds(UUID uuid) {
         return getConfig().getInt(uuid.toString());
     }

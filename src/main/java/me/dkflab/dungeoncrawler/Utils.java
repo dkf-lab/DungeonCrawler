@@ -13,6 +13,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +23,36 @@ import java.util.List;
 import java.util.Random;
 
 public class Utils {
+
+    public static void noPerms(CommandSender s) {
+        s.sendMessage(color("&c[!] &7Insufficient permissions."));
+    }
+
+    public static ItemStack rename(ItemStack item, String name) {
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(color(name));
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public static ItemStack addLore(ItemStack item, List<String> lore) {
+        ItemMeta meta = item.getItemMeta();
+        List<String> l = new ArrayList<>();
+        for (String s:lore) {
+            l.add(color(s));
+        }
+        meta.setLore(l);
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public static ItemStack createPotionItem(PotionType type,int level, boolean extend, boolean upgraded) {
+        ItemStack potion = new ItemStack(Material.POTION, 1);
+        PotionMeta meta = (PotionMeta) potion.getItemMeta();
+        meta.setBasePotionData(new PotionData(type,extend,upgraded));
+        potion.setItemMeta(meta);
+        return potion;
+    }
 
     public static ItemStack createItem(Material material, int amount, String name, List<String>lore, HashMap<Enchantment, Integer> enchants, List<ItemFlag> flags, Boolean unbreakable) {
         ItemStack item = new ItemStack(material, amount);

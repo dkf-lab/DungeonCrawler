@@ -5,24 +5,22 @@ import me.dkflab.dungeoncrawler.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 
-import java.util.*;
-
-import static me.dkflab.dungeoncrawler.Utils.color;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class ShopScreen implements InventoryHolder {
 
     private final Inventory inv;
 
     private DungeonCrawler main;
-    public ShopScreen(DungeonCrawler main) {
-        this.main = main;
-        inv = Bukkit.createInventory(this,45,"Shop");
+    public ShopScreen(DungeonCrawler m) {
+        main = m;
+        inv = Bukkit.createInventory(this,45,"Shop for Gear");
         init();
     }
 
@@ -32,39 +30,13 @@ public class ShopScreen implements InventoryHolder {
         }
         HashMap<Enchantment, Integer> enchants = new HashMap();
         enchants.put(Enchantment.LUCK, 1);
-        List<String> lore = new ArrayList<>();
-        lore.add(color("&7Upgrade your weapon's power."));
-        lore.add(color("&r"));
-        lore.add(color("&6Price: &a50 Emeralds"));
-        inv.setItem(21, Utils.createItem(Material.DIAMOND_SWORD, 1, "&f&lUpgrade Weapons", lore, enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
-        lore.clear();
-        lore.add(color("&7Upgrade your armor's protection."));
-        lore.add(color("&r"));
-        lore.add(color("&6Price: &a50 Emeralds"));
-        inv.setItem(23, Utils.createItem(Material.DIAMOND_CHESTPLATE, 1, "&f&lUpgrade Armor", lore, enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
+        inv.setItem(22, Utils.createItem(Material.GLASS_BOTTLE, 1, "&dPotions", Collections.singletonList("&7Open the potion store."), enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
     }
 
     public void listener(InventoryClickEvent e) {
         Material mat = e.getCurrentItem().getType();
-        Player p = (Player)e.getWhoClicked();
-        UUID u = p.getUniqueId();
-        if (mat.equals(Material.DIAMOND_SWORD)) {
-            if (main.currencyManager.purchase(u, 50)) {
-                main.upgradeManager.addWeaponLevel(u,1);
-                p.closeInventory();
-                p.sendMessage(color("&a&lPurchase success!"));
-            } else {
-                p.sendMessage(color("&c&l[!] &7Insufficient funds!"));
-            }
-        }
-        if (mat.equals(Material.DIAMOND_CHESTPLATE)) {
-            if (main.currencyManager.purchase(u, 50)) {
-                main.upgradeManager.addArmorLevel(u,1);
-                p.closeInventory();
-                p.sendMessage(color("&a&lPurchase success!"));
-            } else {
-                p.sendMessage(color("&c&l[!] &7Insufficient funds!"));
-            }
+        if (mat.equals(Material.GLASS_BOTTLE)) {
+            e.getWhoClicked().openInventory(main.getGUI().potionScreen.getInventory());
         }
     }
 
@@ -72,4 +44,5 @@ public class ShopScreen implements InventoryHolder {
     public Inventory getInventory() {
         return inv;
     }
+
 }
