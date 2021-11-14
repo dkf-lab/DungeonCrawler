@@ -34,6 +34,7 @@ public class DungeonCommand implements CommandExecutor {
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("leave")) {
                     main.getMM().removePlayerFromArena(p);
+                    p.getInventory().clear();
                     p.sendMessage(Utils.color("&cYou have left the dungeon."));
                     p.teleport(main.getConfig().getLocation("spawn"));
                     return true;
