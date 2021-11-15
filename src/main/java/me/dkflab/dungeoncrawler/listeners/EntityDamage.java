@@ -60,6 +60,9 @@ public class EntityDamage implements Listener {
                 BukkitRunnable run = new BukkitRunnable() {
                     @Override
                     public void run() {
+                        for (Player all : main.getMM().getPlayersInDungeon(main.getMM().getDungeonOfPlayer(p))) {
+                            all.teleport(main.getConfig().getLocation("spawn"));
+                        }
                         main.getMM().resetDungeon(main.getMM().getDungeonOfPlayer(p));
                     }
                 };
