@@ -5,7 +5,6 @@ import me.dkflab.dungeoncrawler.gui.ClassSelect;
 import me.dkflab.dungeoncrawler.gui.DungeonSelect;
 import me.dkflab.dungeoncrawler.gui.UpgradeScreen;
 import me.dkflab.dungeoncrawler.gui.ShopScreen;
-import me.dkflab.dungeoncrawler.gui.shops.PotionScreen;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -21,14 +20,12 @@ public class GUIManager {
     public ClassSelect classSelect;
     public ShopScreen shopScreen;
     public UpgradeScreen upgradeScreen;
-    public PotionScreen potionScreen;
 
     private void init() {
         dungeonSelect = new DungeonSelect(main);
         classSelect = new ClassSelect(main);
         shopScreen = new ShopScreen(main);
         upgradeScreen = new UpgradeScreen(main);
-        potionScreen = new PotionScreen(main);
     }
 
     public void event(InventoryClickEvent e) {
@@ -50,9 +47,8 @@ public class GUIManager {
                 e.setCancelled(true);
                 upgradeScreen.listener(e);
             }
-            if (i instanceof PotionScreen) {
-                e.setCancelled(true);
-                potionScreen.listener(e);
+            if (e.getView().getTitle().equalsIgnoreCase("Shop")) {
+                main.getShopManager().listener(e);
             }
         }
     }

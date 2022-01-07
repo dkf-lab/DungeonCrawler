@@ -18,6 +18,7 @@ public final class DungeonCrawler extends JavaPlugin {
     public CurrencyManager currencyManager;
     public UpgradeManager upgradeManager;
     public BarrelManager barrelManager;
+    private ShopManager shopManager;
 
     @Override
     public void onEnable() {
@@ -60,6 +61,7 @@ public final class DungeonCrawler extends JavaPlugin {
 
     private void registerCommands() {
         ClassCommand cc = new ClassCommand(this);
+        new ShopAdminCommand(this);
         getCommand("class").setExecutor(cc);
         getCommand("createclass").setExecutor(cc);
         getCommand("dungeon").setExecutor(new DungeonCommand(this));
@@ -71,6 +73,13 @@ public final class DungeonCrawler extends JavaPlugin {
 
     public GUIManager getGUI() {
         return this.gui;
+    }
+
+    public ShopManager getShopManager() {
+        if (shopManager == null) {
+            shopManager = new ShopManager(this);
+        }
+        return shopManager;
     }
 
     public MatchmakingManager getMM() {

@@ -13,6 +13,7 @@ commands:
   upgrade:
     description: Upgrade tools
   shop:
+    aliases: [dshop, dstore, store, dungeonshop, dungeonstore]
     description: Shop for tools
   createclass:
     description: Create a class
@@ -23,4 +24,8 @@ commands:
   barrel:
     description: Add item to barrel
     usage: /<command> <name>
+    permission: dungeon.admin
+  shopadmin:
+    aliases: [dshopadmin, dstoreadmin, storeadmin, dungeonstoreadmin, dungeonshopadmin]
+    description: Shop admin command
     permission: dungeon.admin

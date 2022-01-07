@@ -17,17 +17,29 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Utils {
+
+    private static ItemStack pane;
 
     public static void noPerms(CommandSender s) {
         s.sendMessage(color("&c[!] &7Insufficient permissions."));
     }
 
+    public static void sendMessage(CommandSender s, String message) {
+        s.sendMessage(color(message));
+    }
+
+    public static void error(CommandSender s, String error) {
+        s.sendMessage(color("&c[!] &7" + error));
+    }
+
+    public static ItemStack priceLore(ItemStack item, int price) {
+        item.setLore(Collections.singletonList(color("&7Price: &a" + price + " Emeralds")));
+        return item;
+    }
+    
     public static ItemStack rename(ItemStack item, String name) {
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(color(name));
@@ -109,7 +121,10 @@ public class Utils {
     }
 
     public static ItemStack blankPane() {
-        return createItem(Material.GRAY_STAINED_GLASS_PANE,1,"&r",null,null,null,false);
+        if (pane == null) {
+            pane = createItem(Material.GRAY_STAINED_GLASS_PANE,1,"&r",null,null,null,false);
+        }
+        return pane;
     }
 
     public static int randomNumber(int min, int max) {

@@ -23,7 +23,7 @@ public class ShopCommand implements CommandExecutor {
                 return true;
             }
             Player p = (Player)sender;
-            p.openInventory(main.gui.shopScreen.getInventory());
+            p.openInventory(main.getGUI().shopScreen.getInventory());
         }
         return true;
     }

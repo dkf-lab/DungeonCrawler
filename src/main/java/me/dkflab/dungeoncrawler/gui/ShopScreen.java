@@ -2,16 +2,22 @@ package me.dkflab.dungeoncrawler.gui;
 
 import me.dkflab.dungeoncrawler.DungeonCrawler;
 import me.dkflab.dungeoncrawler.Utils;
+import me.dkflab.dungeoncrawler.objects.ShopMenuObject;
+import me.dkflab.dungeoncrawler.objects.ShopObject;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class ShopScreen implements InventoryHolder {
 
@@ -20,9 +26,11 @@ public class ShopScreen implements InventoryHolder {
     private DungeonCrawler main;
     public ShopScreen(DungeonCrawler m) {
         main = m;
-        inv = Bukkit.createInventory(this,45,"Shop for Gear");
+        inv = Bukkit.createInventory(this,45,Utils.color("&f&lShop"));
         init();
     }
+
+    List<ShopMenuObject> menuObjectList;
 
     private void init() {
         for (int i = 0; i < 45; i++) {
@@ -30,13 +38,18 @@ public class ShopScreen implements InventoryHolder {
         }
         HashMap<Enchantment, Integer> enchants = new HashMap();
         enchants.put(Enchantment.LUCK, 1);
-        inv.setItem(22, Utils.createItem(Material.GLASS_BOTTLE, 1, "&dPotions", Collections.singletonList("&7Open the potion store."), enchants, Collections.singletonList(ItemFlag.HIDE_ENCHANTS), false));
+        menuObjectList = main.getShopManager().getMenuObjects();
+        for (ShopMenuObject s : menuObjectList) {
+            inv.setItem(s.getSlot(),s.getItem());
+        }
     }
 
     public void listener(InventoryClickEvent e) {
-        Material mat = e.getCurrentItem().getType();
-        if (mat.equals(Material.GLASS_BOTTLE)) {
-            e.getWhoClicked().openInventory(main.getGUI().potionScreen.getInventory());
+        ItemStack clickedItem = e.getCurrentItem();
+        for (ShopMenuObject s : menuObjectList) {
+            if (s.getItem().isSimilar(clickedItem)) {
+                main.getShopManager().openShop(s.getShop(), (Player) e.getWhoClicked());
+            }
         }
     }
 
